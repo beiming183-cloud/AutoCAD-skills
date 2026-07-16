@@ -48,7 +48,7 @@ Keep severity separate from confidence. A critical rule with weak evidence is `N
 - Native model: recomputes without suppressed/failed unexpected features or dangling references.
 - B-rep: valid topology, expected solid/shell count, positive volume where intended, consistent orientation, and no unintended open boundaries.
 - Mesh: watertight/manifold when required, oriented normals, no self-intersections, degenerate faces, isolated fragments, or nonfinite coordinates; record tessellation tolerance.
-- DXF/DWG: supported entity types, explicit units, expected layers/layouts, no corrupt blocks or unsupported proxy objects that affect the review.
+- DXF/DWG: supported entity types, explicit `$INSUNITS`, expected `$ACADVER`, layers/layouts, no corrupt blocks, and no unsupported proxy objects that affect the review.
 - PDF/image: classify vector/raster/mixed and record extraction/OCR confidence.
 
 Do not run downstream exact-geometry rules on a representation that failed its preconditions.
@@ -56,7 +56,8 @@ Run the native CAD/EDA application's own geometry checker, rebuild, DRC, or ERC 
 
 ### Gate 2: universal geometry DRC
 
-- Open or self-intersecting profiles, duplicate/coincident entities, zero-length edges, sliver faces, zero-thickness regions, unintended overlaps, disconnected material, and accidental extra bodies.
+- Open or self-intersecting profiles, consecutive duplicate vertices, duplicate closing vertices, zero-length or below-tolerance segments, duplicate/reversed entities, sliver faces, zero-thickness regions, unintended overlaps, disconnected material, and accidental extra bodies.
+- For every polyline-like profile, evaluate each consecutive vertex pair and the closing pair when closed. Report the entity handle, segment index, measured length, tolerance, units, and location for every degenerate segment; do not let closed-state or entity-count checks mask it.
 - Bounding box, mass/volume where justified, symmetry, concentricity, tangency, parallel/perpendicular intent, pattern count/pitch, and critical dimensions.
 - Minimum distance, thickness, radius, angle, and feature size only against supplied/applicable thresholds.
 - Imported geometry unit/orientation sanity and comparison against at least one known dimension.
@@ -108,6 +109,7 @@ Geometry alone can flag process risk; it does not predict mold flow, distortion,
 
 - Generate explicit deliverables from the authoritative source.
 - Reopen/re-import each critical exchange artifact and compare units, envelope, body/component count, hierarchy, orientation, and critical measurements.
+- For DXF, compare entity counts by type and layer, canonical geometry fingerprints at a declared coordinate tolerance, polyline vertex/closed/bulge data, circles and arcs, Unicode text, dimension-object preservation, `$INSUNITS`, `$ACADVER`, extents, and critical measurements. Equal total entity counts alone are insufficient evidence.
 - Review plotted PDF/images and 3D review views for clipping, missing symbols/fonts, stale geometry, wrong visibility, and presentation errors.
 - Confirm the original/source, derived artifacts, revision identifiers, DRC report, and `NOT_EVALUATED` items are traceable.
 - Prefer a structured conversion/status report as the automation contract. Read detailed logs only when the status report is incomplete or failed; a zero exit code without the expected output and evidence is not success.

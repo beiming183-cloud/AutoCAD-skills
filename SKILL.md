@@ -1,6 +1,6 @@
 ---
 name: mechanical-drafting-gbt
-description: Create, revise, audit, validate, and present mechanical CAD using Chinese GB/T drafting conventions. Use for parametric 3D parts and assemblies, DXF/DWG/PDF/STEP workflows, CAD design-rule checks (DRC), design-for-manufacturing (DFM) reviews, shafts, sleeves, flanges, machined parts, assembly and detail drawings, orthographic projection, views and sections, dimensions, fits and tolerances, surface texture, title blocks, line types, 2D/3D cross-verification, 3D review presentations, and drawing-standard compliance reviews.
+description: Create, revise, audit, validate, and present mechanical CAD using Chinese GB/T drafting conventions. Use for AutoCAD and AutoCAD MCP workflows, parametric 3D parts and assemblies, DXF/DWG/PDF/STEP workflows, CAD design-rule checks (DRC), design-for-manufacturing (DFM) reviews, shafts, sleeves, flanges, gears, planetary gear sets, machined parts, assembly and detail drawings, orthographic projection, views and sections, dimensions, fits and tolerances, surface texture, title blocks, line types, 2D/3D cross-verification, 3D review presentations, and drawing-standard compliance reviews.
 ---
 
 # GB/T Mechanical Drafting
@@ -9,7 +9,7 @@ Create readable manufacturing drawings, not decorative CAD illustrations. Treat 
 
 ## Required Workflow
 
-1. Classify the task and load only the required references: always read `references/gbt-drafting.md` for engineering drawings; read `references/cad-workflows.md` for 2D/3D conversion or presentation, `references/cad-3d-modeling.md` for 3D parts/assemblies, and `references/drc-review.md` for every DRC, DFM, fit, interference, or release review.
+1. Classify the task and load only the required references: always read `references/gbt-drafting.md` for engineering drawings; read `references/autocad-mcp-workflow.md` for AutoCAD/MCP execution, `references/cad-workflows.md` for 2D/3D conversion or presentation, `references/cad-3d-modeling.md` for 3D parts/assemblies, and `references/drc-review.md` for every DRC, DFM, fit, interference, or release review.
 2. Inspect the source CAD, drawing, screenshot, and user requirements. Record concrete defects and separate supplied values from derived or assumed values.
 3. Preserve unrelated user geometry. Create a clean replacement in a separate area when extensive repair is needed; remove old geometry only when the user authorizes it.
 4. Confirm the sheet size, scale, units, projection method, CAD plot style, and required deliverable before laying out views. If any are unknown, state a conservative assumption.
@@ -43,11 +43,13 @@ Create readable manufacturing drawings, not decorative CAD illustrations. Treat 
 - Keep editable parametric/native CAD as the source of truth. Treat STEP/DXF/PDF exports, meshes, renders, and plots as derived artifacts unless no stronger source exists.
 - Use named parameters, stable datums/axes, native features, and native patterns. Build assemblies from explicit mating interfaces and degrees of freedom, not unexplained world-coordinate offsets.
 - Run incremental DRC on changed geometry and one full release DRC before handoff. A successful command or attractive render is not a passed design review.
+- For AutoCAD/MCP work, prove readiness before mutation, use bounded recovery, track created handles, prefer atomic transactions, and verify the actual plotted paper/scale plus re-imported DXF geometry. A successful IPC response, save, entity count, or manifest is not release evidence by itself.
 - When a tool cannot create or verify required linetypes, symbols, fonts, dimension styles, or plot behavior, state the limitation and use the closest documented fallback. Do not claim full compliance.
 
 ## Progressive References
 
 - `references/gbt-drafting.md`: standards baseline, drawing rules, physical and mathematical checks, staged verification, and release audit.
+- `references/autocad-mcp-workflow.md`: AutoCAD readiness, dispatcher recovery, structured errors, safe setup, transactions, annotation handles, geometry audit, plotting, DXF comparison, and mechanical primitives.
 - `references/cad-workflows.md`: evidence hierarchy, native 2D editing, 3D-backed drawing, 2D-to-3D consistency reconstruction, PDF/image intake, 3D review packets, tool routing, and risk-scaled validation.
 - `references/cad-3d-modeling.md`: parametric solid/surface modeling, assemblies, motion, representation choice, exchange formats, iteration, and 3D presentation.
 - `references/drc-review.md`: deterministic validator contract, universal geometry and drawing gates, assembly checks, process-specific DFM, severity, evidence, and release reporting.
