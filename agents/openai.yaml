@@ -1,0 +1,4 @@
+interface:
+  display_name: "GB/T Mechanical Drafting"
+  short_description: "Create, verify, and present GB/T mechanical drawings"
+  default_prompt: "Apply current GB/T mechanical drafting conventions; create or revise the CAD drawing; verify mathematical, physical, and cross-view consistency; and produce clear 2D output plus a useful 3D review presentation when the geometry supports it."
