@@ -83,6 +83,7 @@ Official metadata source: National Public Service Platform for Standards, State 
 - Keep views aligned according to the selected projection method. Do not mix first-angle and third-angle placement, and show the projection symbol when required by the drawing or organization.
 - Draw the keyway correctly in longitudinal and end views. The end-view circle must be interrupted at the keyway opening.
 - A section view requires a cutting plane and matching identifiers unless its location and convention make the meaning unambiguous.
+- Use view names that match the actual representation. A view labeled as a section/cutaway must have a valid cutting relationship, visibility treatment, and hatch/section semantics; otherwise label it as an end view, schematic, principle diagram, or concept view as applicable.
 - Hatch only cut material. Keep one angle and spacing for the same part, usually 45 degrees with even spacing.
 - Do not hatch holes, slots, keyways, or space outside the material boundary.
 
@@ -100,6 +101,8 @@ Instantiate at least these release DRC rules when applicable:
 - `GBT_CHINESE_TEXT_RENDER`: required glyphs, technical lettering style, plotted size/proportion, font substitution, and PDF output pass.
 - `GBT_THREAD_REPRESENTATION`: external/internal boundaries, end view, termination, section behavior, and callout match the selected standard edition.
 - `GBT_GEAR_REPRESENTATION`, `GBT_SPLINE_REPRESENTATION`, `GBT_SPRING_REPRESENTATION`, `GBT_CENTRE_HOLE_REPRESENTATION`, and `GBT_BEARING_REPRESENTATION`: the selected representation level and related annotations/BOM agree with geometry and purpose.
+- `VIEW_SEMANTICS_CONSISTENCY`: view name, cutting plane, hatching, visibility, abstraction, and component coverage agree.
+- `PLOT_SCALE_CONSISTENCY`: title-block numeric scale agrees with actual plotted transform; fit-to-page output uses an approved non-scale declaration such as `NTS` and records plot mode `FIT`.
 
 Each result must record the standard edition, drawing/view/entity IDs, representation level, evidence, and any unsupported semantic object. A visually familiar symbol without traceable applicability is not a pass.
 
@@ -151,6 +154,7 @@ Apply this pass to changed geometry, manufacturing-critical features, dense inte
 - Sheet/frame/title block follows the chosen standard and scale.
 - Projection method and view alignment are consistent.
 - Projection symbol and title-block declaration agree with the actual first-/third-angle view placement.
+- View names and drawing title agree with the actual cutting/abstraction behavior and represented component scope.
 - Visible, hidden, center, dimension, and hatch lines are visually distinct.
 - All dimensions use one style, text height, arrow size, precision, and unit convention.
 - No dimension crosses the part unnecessarily; no dimension is shown diagonally for a horizontal axial length.
@@ -159,5 +163,6 @@ Apply this pass to changed geometry, manufacturing-critical features, dense inte
 - Notes do not overlap geometry or dimensions.
 - Viewports, annotation scales, fonts, symbols, and lineweights survive the final PDF/plot/export.
 - Chinese text has no missing/substituted glyphs, and applicable thread/gear/spline/spring/bearing representations pass their GB/T rule IDs.
+- Numeric title-block scale agrees with actual PDF scale; fit-to-page output is not mislabeled as `1:1`.
 - Assumed and unresolved production requirements are disclosed; no invented value is presented as user-approved design intent.
 - The drawing contains enough information to manufacture and inspect the part without duplicate or contradictory requirements.

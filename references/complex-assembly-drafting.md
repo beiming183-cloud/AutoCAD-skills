@@ -24,6 +24,13 @@ Classify the requested result before drawing:
 
 Do not allow visual detail to upgrade the classification. Label a 2D approximation `CONCEPT ONLY` or `NOT FOR MANUFACTURING` when authoritative 3D geometry, component definitions, or production requirements are absent.
 
+Classification changes required evidence, not geometric truth:
+
+- A `concept` or `teaching` drawing may omit production dimensions/tolerances, full BOM, process details, and engineering analysis, but must still pass basic topology, component ownership, shared-view-source, scale-truth, and visual-integrity gates.
+- A `design-review` or `manufacturing-assembly` drawing additionally requires the applicable interface, BOM, GPS/inspection, DFM, configuration, release, and approval evidence.
+
+Maintain a functional/component coverage matrix that supports the drawing title. For an object advertised as a four-stroke engine, identify the required cylinder/piston/crank train plus the intended abstraction or presence of valve timing, intake/exhaust flow path, ignition/injection, compression/combustion context, lubrication/cooling, and other scope-defining systems. If the supplied scope only supports the crank train, title it as a crank-slider mechanism or partial concept rather than a complete engine assembly.
+
 ## Pre-Geometry Contract
 
 Create these artifacts before detailed entities:
@@ -32,7 +39,7 @@ Create these artifacts before detailed entities:
 2. Component tree with stable IDs, subsystem ownership, representation level, expected entity/block/body count where meaningful, and parent/child relationships.
 3. Common datum scheme with global origin, principal axes, center planes, mounting planes, shaft/cylinder axes, and view projection transforms.
 4. Intended connection graph listing ports/nodes, mating or continuation pairs, allowed open endpoints, required tangency/continuity, and expected crossings or occlusions.
-5. View plan stating projection method, authoritative source, view directions, section planes, shared scale, and which features must agree across each view.
+5. View mapping table stating projection method, authoritative model/skeleton revision, source feature/component IDs, view transform/direction, section plane, shared scale, and required cross-view correspondences.
 6. Line/layer plan separating visible outlines, hidden lines, centers, hatches, dimensions, text, construction geometry, and non-plot references.
 7. Acceptance table with rule IDs, applicability, tolerances, units, evidence method, and severity. Treat values such as `0.05 mm` as a project-specific candidate, not a universal threshold; use it only when scale, source accuracy, and user requirements justify it.
 
@@ -73,6 +80,7 @@ Build in reviewable stages:
 Use blocks, arrays, or native components for repetition. Keep each batch within one subsystem and transaction/staging boundary. After every stage:
 
 - Query and record created handles/components.
+- Read back every created/modified handle and compare the normalized request with actual type, role/layer, coordinates/parameters, ownership tags, and closure. Reject and roll back the entire stage on any unexplained postcondition mismatch; do not continue visual cleanup.
 - Inspect structured command, rebuild, constraint, and transaction status. Stop on unresolved errors or warnings that imply missing cuts, failed joins, unsolved constraints, partial creation, or stale geometry; do not build later stages on top of them.
 - Run changed-scope geometry and topology DRC.
 - Compare affected shared parameters and views.
@@ -97,6 +105,8 @@ Build an actual endpoint graph and compare it with the intended connection graph
 
 For a concept drawing, require zero unexplained near-miss connections and zero unintended crossings before release. For manufacturing or design review, use the applicable interface and tolerance requirements rather than concept-only defaults.
 
+Treat `DANGLING_ENDPOINT`, `INTERIOR_CROSSING`, `UNOWNED_LINE`, and `UNCLOSED_MATERIAL_BOUNDARY` per entity. A subsystem-level sentence such as "expected opening" is insufficient without the exact handle/location and design-contract node/role.
+
 ## Line Organization and Visual Review
 
 - Assign every plotted entity an owning component/subsystem and semantic line class.
@@ -116,9 +126,12 @@ Do not release until all applicable gates pass:
 2. Parameter, component, datum, connection, view, and line-class artifacts are complete and traceable.
 3. Geometry DRC passes for degeneracy, duplication, self-intersection, radii, tangency, envelopes, and repeated features.
 4. Topology DRC passes for intended connections, dangling/near-miss endpoints, junctions, crossings, occlusions, and protrusions.
-5. Every orthographic/section view agrees with the authoritative model or shared parameter skeleton.
-6. Stage previews and final plotted artifacts are current, uncached, legible, and free of unexplained visual noise.
-7. Before/after geometry and visual differences are limited to intended components and relationships.
-8. All missing capabilities and `NOT_EVALUATED` rules are disclosed; none is silently converted to `PASS`.
+5. Every geometry entity has a component/semantic role, and every material boundary required by the representation is closed.
+6. Every orthographic/section/end/detail view agrees with the authoritative model or shared parameter skeleton and its mapping table.
+7. Drawing title, view labels, cutting/hatching behavior, and component/functional coverage describe the same deliverable class.
+8. Actual PDF plot scale and title-block scale/declaration agree.
+9. Stage previews and final plotted artifacts are current, uncached, legible, and free of unexplained visual noise.
+10. Before/after geometry and visual differences are limited to intended components and relationships.
+11. All missing capabilities and `NOT_EVALUATED` rules are disclosed; none is silently converted to `PASS`.
 
 Report parameter assumptions, component coverage, connection and view results, preview identities, release blockers, and the exact limits of any 2D fallback. Treat a failed prototype as test evidence, not as a deliverable to be cosmetically relabeled.

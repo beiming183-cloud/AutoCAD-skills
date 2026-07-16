@@ -1,4 +1,4 @@
 interface:
   display_name: "AutoCAD GB/T Mechanical Drafting"
   short_description: "AutoCAD drafting, DRC, and 2D/3D verification"
-  default_prompt: "Create or revise the mechanical CAD using verified GB/T editions; when projection is unspecified, use and disclose the GB/T first-angle default. Establish the exact revision/configuration, parameters, semantic references, dependencies, and acceptance evidence. Use the cheapest valid verification tier for local edits, escalate for global/release changes, report every limitation, and require external human approval for manufacturing release."
+  default_prompt: "Create or revise the mechanical CAD using verified GB/T editions and the cheapest valid verification tier. Read back every mutable result and hard-stop on any requested-versus-actual semantic mismatch; after one failed recovery, switch to a verified backend or report blocked. Require explicit topology ownership, common view sources, plot-scale truth, disclosed limitations, and external human approval for manufacturing release."

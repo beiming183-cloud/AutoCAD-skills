@@ -25,6 +25,7 @@ Use this route for an existing DWG/DXF or a drawing authored directly in CAD.
 - Prefer the native CAD application when associative dimensions, blocks, layouts, plot styles, or vendor-specific objects must survive.
 - Keep model geometry at 1:1 and control plotted scale through layouts/viewports unless the existing project has a different documented convention.
 - Use structured CAD APIs. For DXF automation or audit, prefer a library such as `ezdxf`; do not parse DXF as unstructured text.
+- If a live CAD/MCP mutation path repeats a requested-versus-actual postcondition mismatch, stop using it for geometry. Prefer a deterministic parameter generator plus structured DXF library such as `ezdxf` when available, then reopen and independently audit the DXF before using the native application for proven-safe annotation/plot operations.
 - Validate entity types and counts by layer, drawing extents, closed profiles, duplicate or overlapping entities, dimensions against geometry, layouts, viewport scales, fonts, symbols, and final plot output.
 - Treat a DWG-to-DXF round trip as potentially lossy. Preserve the source file and disclose any unsupported object, font, plot-style, or annotation behavior.
 
@@ -121,7 +122,7 @@ Use for assemblies, fit-critical interfaces, safety-related parts, conflicting i
 - Run full applicable geometry/drawing/assembly/DFM/GPS gates, regenerate and inspect the final plotted sheet, re-import critical exchange formats, and build the revision-bound release evidence manifest.
 - Require explicit resolution or a documented `needs_review` finding for every conflict. Add engineering analysis only when loads, materials, boundary conditions, and acceptance criteria are available.
 
-Escalate immediately to Tier 2 or Tier 3 when an edit changes units, global coordinates/datums, projection method, model orientation, global parameters, configurations, topology/stable-ID mapping, assembly constraints, cross-view authority, title block/revision, BOM, external dependencies, file schema, or a release-critical requirement; also escalate when unexpected entities change or the local proof is inconclusive.
+Escalate immediately to Tier 2 or Tier 3 when an edit changes units, global coordinates/datums, projection method, model orientation, global parameters, configurations, topology/stable-ID mapping, assembly constraints, cross-view authority, title block/revision, BOM, external dependencies, file schema, or a release-critical requirement; also escalate when unexpected entities change or the local proof is inconclusive. A repeated mutable postcondition mismatch does not merely escalate verification: it blocks that backend until conformance is restored or a verified backend is selected.
 
 Stop when all applicable deterministic checks pass, visual review finds no unexplained issue, and high-risk conflicts are resolved or explicitly reported. Do not repeat unchanged low-risk checks without a new reason.
 
@@ -134,6 +135,7 @@ Preserve the original source. Return only the formats justified by the task, typ
 - A validated 3D neutral model when one was created or supplied as the drawing source.
 - A small 3D review packet with labeled views when requested or useful.
 - A verification summary listing each check, evidence or measurement, result, assumptions, `needs_review` items, and unsupported claims.
+- The authoritative source, preserved original/backup, editable working copy, final artifact locations, and cleanup/deletion/retention strategy.
 
 Report only checks that actually ran. State whether physical review covered geometry/assembly plausibility only or included a real engineering calculation/simulation.
 

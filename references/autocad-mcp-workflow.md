@@ -8,6 +8,8 @@ Keep this workflow bridge-neutral. Names such as `system.ensure_ready`, transact
 
 - Readiness and capability discovery
 - Failure contract and bounded recovery
+- Strict request and postcondition contract
+- Bridge conformance tests
 - Mechanical drawing setup
 - Transactions and entity ownership
 - Geometry and annotation execution
@@ -45,7 +47,7 @@ Treat any payload containing an error as failure even when an outer MCP wrapper 
 
 After every mutable operation, inspect command completion, document state, transaction result, created/modified handles, and any rebuild/constraint warnings before issuing dependent operations. A nominally successful response with an empty trim, failed join, unsolved constraint, partial batch, or stale document is not success.
 
-Compare requested targets/values with actual post-operation entities and a changed-handle/geometry fingerprint. Treat `ok` with no intended semantic difference, unexpected auto-adjustment, or changes outside the target set as failure or `needs_review`.
+Compare requested targets/values with actual post-operation entities and a changed-handle/geometry fingerprint. Treat `ok` with no required semantic difference, unexpected auto-adjustment, coordinate/state carry-over, or changes outside the target set as a hard failure. An idempotent ensure-state operation may pass without mutation only when the pre-state already matched the full request and the response explicitly reports `already_satisfied` with readback evidence. Stop dependent mutation on every other no-op until the stage is rolled back and the cause is resolved.
 
 Prefer structured failures containing:
 
@@ -71,8 +73,43 @@ Distinguish at least these states when the bridge exposes enough evidence:
 - `E_IPC_TIMEOUT`
 - `E_COMMAND_STATE_BLOCKED`
 - `E_OUTPUT_PATH_REJECTED`
+- `E_POSTCONDITION_MISMATCH`
 
 Do not guess recovery from message fragments when a code or state probe is available. Report bridge defects separately from drawing defects.
+
+## Strict Request and Postcondition Contract
+
+Prefer immutable, strongly typed, self-contained request objects. Every mutable request must carry all required coordinates/parameters explicitly; never inherit omitted `x1`, `y1`, `x2`, `y2`, layer, style, or geometry fields from a global/last-command state. Use `strict: true` or an equivalent schema mode when exposed so missing, mistyped, or unknown extra fields are rejected before mutation.
+
+Assign each operation a unique request/stage ID. Require responses to return:
+
+- `requested`: normalized request values after explicit unit conversion.
+- `actual`: values read back from AutoCAD after creation/update.
+- `diff`: field-level numeric/semantic differences with tolerance and units.
+- All created/modified handles, document/path identity, transaction state, and warning/error state.
+
+Immediately query every created/modified handle. Compare entity type, layer, `component_id`, `line_class`, coordinates/endpoints/vertices, radii/angles, text content/bounds, closed state, associations, and other operation-owned parameters. Prefer native semantic metadata; if the entity cannot store it safely, keep the same fields in the operation manifest/sidecar evidence.
+
+Any unexplained mismatch is `E_POSTCONDITION_MISMATCH`, not `WARNING`:
+
+1. Stop all dependent drawing calls.
+2. Roll back the atomic batch; if transactions are unavailable, delete only the tracked new entities after authorization and prove cleanup.
+3. Reset/reload the bridge once and rerun a minimal conformance probe.
+4. If the same failure recurs, switch to a verified structured backend or mark the work `blocked`. Do not continue repairing or visually decorating entities whose semantic coordinates are untrusted.
+
+For document and plot operations, postconditions include the actual active filename/path, media, printable area, plot mode, computed scale, and output identity. A requested filename that leaves the active document as `Drawing1.dwg`, or a requested fixed scale that produces fit-to-page, is a postcondition failure.
+
+## Bridge Conformance Tests
+
+Run bridge conformance tests after a bridge/backend/schema update and whenever coordinate carry-over or a postcondition mismatch is suspected. Do not run the full stress suite during every normal drawing task.
+
+- Interleave `LINE`, `RECTANGLE`, `POLYLINE`, and `MTEXT` creation with unique sentinel coordinates/content for at least 100 deterministic cycles; read every handle back and prove that no field leaks across requests or batches.
+- Vary omitted/extra/wrong-type fields under strict mode and prove that invalid requests are rejected without creating entities.
+- Inject one batch failure and prove atomic rollback leaves entity count, handles, and geometry fingerprint unchanged.
+- Exercise repeated drawing creation/naming, save/export, and plot calls; compare requested and actual document/output identities.
+- Record bridge/backend/schema versions, seed/input fixture, per-operation requested/actual/diff, failure index, cleanup result, and final drawing fingerprint.
+
+A failing conformance fixture blocks all further mutable use of that backend until the fixture passes after repair or a verified backend is selected.
 
 ## Mechanical Drawing Setup
 
@@ -138,6 +175,8 @@ Discover capabilities before selecting a construction method. Record whether the
 
 Choose the highest representation that the available tools and evidence can support. If safe 3D operations or projected views are unavailable, use a shared parametric 2D skeleton and disclose that the result is a 2D concept/teaching representation. Do not simulate 3D authority by drawing front and side views from separate visual estimates.
 
+If the AutoCAD bridge repeats `E_POSTCONDITION_MISMATCH`, prefer a deterministic structured DXF generator/parser such as `ezdxf` when available: generate parameterized geometry outside the faulty mutation path, then use AutoCAD/MCP only to open, read back, audit, annotate where proven safe, and plot. If no verified backend exists, stop as `blocked`.
+
 Limit each mutable batch to one coherent subsystem or reviewable stage. After the skeleton and after every subsystem, audit handles, topology, shared parameters, affected views, and a fresh preview before continuing. Batch success proves only that calls returned; it does not prove trimming, connectivity, tangency, occlusion, or assembly correctness.
 
 Prefer dry-run/preview modes for cleanup, relayering, topology repair, and other broad mutations when exposed. Compare the proposed handle set with the subsystem manifest before applying changes.
@@ -160,6 +199,8 @@ For lines, arcs, circles, and polylines, check:
 - Unexpected entity islands, layer/type mismatches, and stray construction geometry that will plot.
 
 Use an explicit model-space tolerance with units. Each failure must identify the entity handle, segment/subentity index, location, measured value, and threshold. Entity count, closed flags, save success, and DXF readability do not prove clean geometry.
+
+Audit by semantic role as well as geometry. Distinguish component outlines, material boundaries, center/hidden/construction lines, dimensions/leaders, hatches, table/title-block lines, and intentional open ports; do not let table or annotation geometry dilute component-topology findings.
 
 Prefer repairing the source generator and regenerating. Automated cleanup may remove consecutive duplicate vertices or zero-length segments only on newly generated/tracked geometry and only when topology and intent remain unchanged. Re-run the full affected audit after cleanup.
 
@@ -184,6 +225,8 @@ For every release plot, explicitly set and verify:
 - Center/offset and lineweight behavior.
 
 When the title block says `1:1`, require fixed 1:1 plotting. Record the calculated plot scale and reject a fit-to-paper result mislabeled as 1:1. Reopen the PDF and inspect full-sheet plus readable-detail views for blank output, clipping, overlaps, missing fonts/symbols, incorrect lineweights, and scale/title-block disagreement.
+
+Report `PLOT_SCALE_CONSISTENCY` with requested mode/scale, actual media/plot area/transform/computed scale, title-block declaration, and PDF evidence. If fit-to-page is used, do not show a numeric engineering scale such as `1:1`; use an approved non-scale designation such as `NTS` and record the plot mode as `FIT`.
 
 ## Delivery and DXF Re-import
 

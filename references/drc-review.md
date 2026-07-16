@@ -34,6 +34,8 @@ Use these result states:
 
 Keep severity separate from confidence. A critical rule with weak evidence is `NOT_EVALUATED`, not a low-confidence pass.
 
+A `WARNING` is not blanket permission to release. Any warning involving unresolved topology, component ownership, view source/semantics, document identity, or plot scale is release-blocking until every instance is individually classified with evidence or formally waived. Never explain a group of handles as "expected" without proving intent for each handle/location.
+
 ## Exclusions and Waivers
 
 Never suppress, exclude, downgrade, or waive a finding merely to make a gate pass. Require each waiver to record the exact rule/finding, scope/entities, technical justification, compensating evidence, author/reviewer when available, date/revision, and expiry or revalidation condition. Re-run the applicable checks after any edit and report stale or unverifiable waivers as findings.
@@ -70,6 +72,17 @@ Run the native CAD/EDA application's own geometry checker, rebuild, DRC, or ERC 
 - Minimum distance, thickness, radius, angle, and feature size only against supplied/applicable thresholds.
 - Imported geometry unit/orientation sanity and comparison against at least one known dimension.
 
+Instantiate these semantic topology rules when applicable:
+
+- `DANGLING_ENDPOINT`: every open endpoint records handle/subentity, coordinates, `component_id`, `line_class`, nearest intended node, and `intentional_open_end`. It passes only when the design contract explicitly permits that exact open end.
+- `NEAR_MISS_CONNECTION`: endpoints within the connection search tolerance but outside the coincidence tolerance require measured gap and intended-node comparison.
+- `INTERIOR_CROSSING`: every non-noded crossing records both entity owners/roles and whether it is a permitted visual crossing, an occlusion requiring trim/hide, or a defect.
+- `UNOWNED_LINE`: every geometry entity must belong to a component/subsystem or an allowed annotation/construction/table role; release requires zero unexplained entities.
+- `UNCLOSED_MATERIAL_BOUNDARY`: each intended material boundary must form the specified closed loops after occlusion/view semantics are applied.
+- `PROTRUDING_OR_OCCLUDED_GEOMETRY`: detect fragments beyond the owning envelope and foreground/background lines that were not trimmed/hidden as intended.
+
+Concept and schematic drawings must still have zero unexplained findings for these rules. Reduced detail is not reduced topology integrity.
+
 ### Gate 3: drawing DRC
 
 - Projection method, view identity/alignment, 2D/3D and cross-view consistency, section truth, hidden/center lines, and feature multiplicity.
@@ -82,6 +95,14 @@ Run the native CAD/EDA application's own geometry checker, rebuild, DRC, or ERC 
 - Text, symbols, fonts, lineweights, hatches, viewports, and plot scale survive final export.
 - Compare stable-view before/after renders for revisions. Confirm that the visual difference covers the intended components/annotations only; investigate an empty delta, unrelated changed regions, or camera/layer/scale drift before accepting it as evidence.
 - Manufacturing and inspection information is sufficient for the intended release scope; unresolved data is explicit.
+
+Apply these drawing-semantic rules:
+
+- `VIEW_SOURCE_CONSISTENCY`: every principal/section/end/detail view maps to the same authoritative 3D model or shared parameter skeleton and declared transform; separately eyeballed proportions fail.
+- `VIEW_SEMANTICS_CONSISTENCY`: labels such as section, cutaway, detail, schematic, or principle diagram agree with actual cutting-plane, hatch, visibility, and abstraction behavior.
+- `DELIVERABLE_SCOPE_IDENTITY`: the title and advertised object are supported by the component/functional coverage matrix. A crank-slider outline with valve/port/ignition context removed cannot be presented as a complete four-stroke engine assembly drawing.
+- `PLOT_SCALE_CONSISTENCY`: title-block scale agrees with actual layout/viewport/PDF transform. Fit-to-page output cannot carry `1:1` or another numeric engineering scale; use an approved `NTS`/non-scale declaration and record plot mode `FIT`.
+- `FINAL_VISUAL_INTEGRITY`: stable final views contain no unexplained isolated lines, protruding fragments, unowned thin lines, open material boundaries, or foreground/background occlusion errors.
 
 ### Gate 4: assembly and motion DRC
 
@@ -126,6 +147,7 @@ Geometry alone can flag process risk; it does not predict mold flow, distortion,
 - Review plotted PDF/images and 3D review views for clipping, missing symbols/fonts, stale geometry, wrong visibility, and presentation errors.
 - Confirm the original/source, derived artifacts, revision identifiers, DRC report, and `NOT_EVALUATED` items are traceable.
 - Apply `product-definition-release.md` for configurations, BOM/balloon mapping, dependency closure, semantic change review, manifest hashes, release verdict, and external approval status.
+- Block release while any semantic/topology warning lacks a per-finding disposition and evidence, even when all purely geometric rules report no `FAIL`.
 - Prefer a structured conversion/status report as the automation contract. Read detailed logs only when the status report is incomplete or failed; a zero exit code without the expected output and evidence is not success.
 
 ## Incremental and Full DRC
@@ -160,6 +182,8 @@ Use a machine-readable table or JSON plus a concise human summary. Each finding 
 rule_id:
 scope/configuration:
 verification_tier: Tier 1 | Tier 2 | Tier 3
+component_id_and_line_class:
+intentional_open_end_or_crossing_basis:
 status: PASS | FAIL | WARNING | NOT_EVALUATED | ERROR
 severity:
 requirement_source:
@@ -171,6 +195,7 @@ location_or_entities:
 method_and_tolerance:
 evidence:
 limitations:
+warning_disposition_or_waiver:
 deferred_gates_and_escalation_triggers:
 recommended_action:
 ```

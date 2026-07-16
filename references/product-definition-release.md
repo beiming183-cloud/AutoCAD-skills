@@ -20,6 +20,7 @@ Record one release baseline before editing or exporting:
 - Native CAD application, geometric kernel, automation/API schema, plug-in and generator/library versions.
 - Units, coordinate frame, projection convention, model/drawing scale convention, and active sheet/layout.
 - Authoritative native model/drawing plus every derived exchange, plot, render, analysis, and inspection artifact.
+- Absolute working-session locations for the preserved original/source, editable working copy, staging/candidate outputs, and final delivered copies; keep public/package manifests relative and free of private paths.
 - Applicable standards/rule-deck editions, supplier/process profile, waivers, approvals, and unresolved requirements.
 
 Do not release from an ambiguous active document, unsaved state, stale drawing, or unspecified configuration. Preserve the previous released baseline and create the candidate in a revisioned staging location.
@@ -96,6 +97,14 @@ Regenerate a representative package from the same inputs when release risk justi
 
 Do not overwrite a prior released package. Do not include credentials, temporary locks, autosaves, caches, private paths, unrelated source files, or unlicensed dependencies.
 
+Define a cleanup strategy before handoff:
+
+- Preserve the authoritative source and previous released baseline.
+- List working/staging/candidate/final locations and identify which copy the user should continue editing.
+- Delete only temporary or failed artifacts created and tracked by the current workflow, after proving they are not referenced and deletion is authorized.
+- Retain failed prototypes only when they are useful test evidence; label them non-deliverable and keep them outside the final package.
+- Report every retained temporary/external dependency and every cleanup action that was deferred.
+
 ## Release Verdict
 
 Use one explicit verdict:
@@ -106,3 +115,5 @@ Use one explicit verdict:
 - `approved externally`: an identified authorized process/person approved the exact revision/configuration outside the agent workflow.
 
 An agent does not self-certify a manufacturing release. Report the exact baseline, artifact inventory, failed/unevaluated gates, waivers, dependency risks, round-trip results, and required human actions.
+
+Also report the authoritative source location, preserved original/backup, editable working copy, final copies, and cleanup result. Do not leave the user guessing which similarly named file is current.
