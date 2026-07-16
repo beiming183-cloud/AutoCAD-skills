@@ -7,6 +7,14 @@ description: Create, revise, audit, validate, and present mechanical CAD using C
 
 Create readable manufacturing drawings, not decorative CAD illustrations. Treat geometry, line hierarchy, view layout, dimensions, and notes as one system.
 
+## Portability Contract
+
+- Keep the core workflow agent- and vendor-neutral. Apply it in Codex, Claude Code, or another compatible skill runner without changing the engineering acceptance criteria.
+- Treat `SKILL.md` and `references/` as the authoritative instructions. Ignore optional runtime-specific metadata, such as `agents/openai.yaml`, when the current runner does not use it.
+- Discover the available CAD application, MCP/automation bridge, shell, parsers, and renderers before execution. Map capability-level steps to exposed safe tools instead of assuming a particular tool namespace or exact operation name.
+- Treat operation names and JSON payloads in the references as interface examples unless the active bridge explicitly exposes them. Never invent a tool call or claim a check ran when only an example schema exists.
+- Keep deliverables and validation evidence in standard CAD/exchange/report artifacts so another agent or application can reopen and independently verify them.
+
 ## Required Workflow
 
 1. Classify the task and load only the required references: always read `references/gbt-drafting.md` for engineering drawings; read `references/autocad-mcp-workflow.md` for AutoCAD/MCP execution, `references/cad-workflows.md` for 2D/3D conversion or presentation, `references/cad-3d-modeling.md` for 3D parts/assemblies, and `references/drc-review.md` for every DRC, DFM, fit, interference, or release review.

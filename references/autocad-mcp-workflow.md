@@ -2,6 +2,8 @@
 
 Read this reference whenever AutoCAD is operated through MCP, file IPC, COM, scripts, or another automation bridge.
 
+Keep this workflow bridge-neutral. Names such as `system.ensure_ready`, transaction operations, and JSON bodies describe required capabilities or preferred contracts; call them only when the active bridge exposes them, otherwise use an available safe equivalent and record the limitation.
+
 ## Contents
 
 - Readiness and capability discovery
