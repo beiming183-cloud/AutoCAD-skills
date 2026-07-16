@@ -11,6 +11,7 @@ Keep this workflow bridge-neutral. Names such as `system.ensure_ready`, transact
 - Mechanical drawing setup
 - Transactions and entity ownership
 - Geometry and annotation execution
+- 2D/3D capability and fallback contract
 - Geometry DRC
 - Preview, plotting, and scale proof
 - Delivery and DXF re-import
@@ -40,6 +41,8 @@ Use bounded recovery:
 ## Failure Contract and Bounded Recovery
 
 Treat any payload containing an error as failure even when an outer MCP wrapper incorrectly reports `isError: false`. Normalize nested text JSON before deciding whether an operation succeeded.
+
+After every mutable operation, inspect command completion, document state, transaction result, created/modified handles, and any rebuild/constraint warnings before issuing dependent operations. A nominally successful response with an empty trim, failed join, unsolved constraint, partial batch, or stale document is not success.
 
 Prefer structured failures containing:
 
@@ -116,6 +119,21 @@ Maintain an operation manifest containing source operation IDs, entity handles, 
 - Use native annotation styles, explicit text height, and collision/clearance checks. Re-audit after automatic placement; auto-avoidance is evidence only after visual review.
 - When an API lacks a native or associative construct, document the fallback and its editability/export limitations.
 
+## 2D/3D Capability and Fallback Contract
+
+Discover capabilities before selecting a construction method. Record whether the active bridge safely exposes:
+
+- 2D editing: endpoint/object snap, `trim`, `extend`, `break`, `join`/polyline edit, fillet, tangent construction, blocks, arrays, and associative dimensions.
+- Constraints: coincident, tangent, concentric, equal radius, horizontal/vertical, symmetry, and dimensional constraints.
+- 3D modeling: primitive solids, extrude, revolve, sweep, loft where applicable, union/subtract/intersect, fillet, chamfer, pattern, assembly transforms, sectioning, and projected drawing views.
+- Reliability: atomic transactions/rollback, complete entity queries and associations, deterministic save/export, and uncached preview generation with overwrite or content-hash evidence.
+
+Choose the highest representation that the available tools and evidence can support. If safe 3D operations or projected views are unavailable, use a shared parametric 2D skeleton and disclose that the result is a 2D concept/teaching representation. Do not simulate 3D authority by drawing front and side views from separate visual estimates.
+
+Limit each mutable batch to one coherent subsystem or reviewable stage. After the skeleton and after every subsystem, audit handles, topology, shared parameters, affected views, and a fresh preview before continuing. Batch success proves only that calls returned; it does not prove trimming, connectivity, tangency, occlusion, or assembly correctness.
+
+Prefer dry-run/preview modes for cleanup, relayering, topology repair, and other broad mutations when exposed. Compare the proposed handle set with the subsystem manifest before applying changes.
+
 ## Geometry DRC
 
 Run geometry DRC before presentation review and again on the exported/re-imported artifact.
@@ -129,6 +147,8 @@ For lines, arcs, circles, and polylines, check:
 - Self-intersections, local reversals, spikes, and inconsistent winding where orientation matters.
 - Duplicate or reversed duplicate entities.
 - Overlapping collinear segments and unintended coincident geometry.
+- Dangling endpoints, near-touching endpoints that should coincide, unintended crossings, untrimmed occluded geometry, protruding segments, and broken required tangencies.
+- Equal-radius/concentric groups, repeated-feature pitch, and projected locations against their shared parameters.
 - Unexpected entity islands, layer/type mismatches, and stray construction geometry that will plot.
 
 Use an explicit model-space tolerance with units. Each failure must identify the entity handle, segment/subentity index, location, measured value, and threshold. Entity count, closed flags, save success, and DXF readability do not prove clean geometry.
@@ -142,6 +162,8 @@ Keep preview and release plotting semantically distinct:
 - A PNG preview operation must produce PNG at an explicit resolution/DPI or return image content/thumbnail data.
 - A PDF plot operation must produce a plotted PDF with explicit page setup.
 - If only PDF is available, rasterize it with an available structured PDF renderer and disclose the fallback; do not pretend the PDF path is a PNG preview.
+- Require a unique output name or explicit overwrite and verify a content hash or modification identity so a cached preview cannot be mistaken for the current drawing.
+- For iterative work, keep camera/view, layer visibility, background, resolution, and scale stable enough to produce a meaningful before/after visual difference. An empty difference may indicate a stale preview; an unrelated difference indicates unintended mutation or unstable rendering state.
 
 For every release plot, explicitly set and verify:
 
@@ -158,6 +180,8 @@ When the title block says `1:1`, require fixed 1:1 plotting. Record the calculat
 
 Deliver from the verified authoritative drawing and then re-import or independently parse the exchange artifact.
 
+Treat DXF as an export unless the user explicitly requests it as the active source. After `save_as_dxf`-style operations, verify that the active document and authoritative DWG/native source did not silently switch to the DXF.
+
 For DXF, record and compare:
 
 - `$INSUNITS`, `$ACADVER`, coordinate precision, and extents.
@@ -172,6 +196,8 @@ For DXF, record and compare:
 Compare the source drawing, DXF re-import, plotted PDF, and manifest as different evidence channels. A matching total entity count is only a coarse inventory check.
 
 The final report must state actual files, paper, plot scale, units, DRC results, re-import comparison, assumptions, unsupported objects, and every `NOT_EVALUATED` item.
+
+Require entity queries to return the parameters needed for repair and proof, including handles, endpoints, arc angles/endpoints, polyline vertices/bulges, MText width/bounds, block membership, groups, constraints, and associative relationships. Mark affected checks `NOT_EVALUATED` when the bridge omits required fields.
 
 ## Mechanical Primitives and Gears
 

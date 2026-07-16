@@ -34,6 +34,10 @@ Use these result states:
 
 Keep severity separate from confidence. A critical rule with weak evidence is `NOT_EVALUATED`, not a low-confidence pass.
 
+## Exclusions and Waivers
+
+Never suppress, exclude, downgrade, or waive a finding merely to make a gate pass. Require each waiver to record the exact rule/finding, scope/entities, technical justification, compensating evidence, author/reviewer when available, date/revision, and expiry or revalidation condition. Re-run the applicable checks after any edit and report stale or unverifiable waivers as findings.
+
 ## Gate Sequence
 
 ### Gate 0: intake and rule applicability
@@ -58,6 +62,8 @@ Run the native CAD/EDA application's own geometry checker, rebuild, DRC, or ERC 
 
 - Open or self-intersecting profiles, consecutive duplicate vertices, duplicate closing vertices, zero-length or below-tolerance segments, duplicate/reversed entities, sliver faces, zero-thickness regions, unintended overlaps, disconnected material, and accidental extra bodies.
 - For every polyline-like profile, evaluate each consecutive vertex pair and the closing pair when closed. Report the entity handle, segment index, measured length, tolerance, units, and location for every degenerate segment; do not let closed-state or entity-count checks mask it.
+- Build an endpoint/topology graph for linework that represents pipes, manifolds, belts, boundaries, or other connected systems. Compare actual nodes and edges with the intended connection graph; detect dangling endpoints, endpoints within the near-miss tolerance but not coincident, unintended branches, non-noded crossings, overlaps, and protruding segments.
+- Check required tangency at line/arc and arc/arc transitions using positional and angular tolerances. Check concentric/equal-radius groups against shared parameters rather than visual similarity.
 - Bounding box, mass/volume where justified, symmetry, concentricity, tangency, parallel/perpendicular intent, pattern count/pitch, and critical dimensions.
 - Minimum distance, thickness, radius, angle, and feature size only against supplied/applicable thresholds.
 - Imported geometry unit/orientation sanity and comparison against at least one known dimension.
@@ -65,9 +71,12 @@ Run the native CAD/EDA application's own geometry checker, rebuild, DRC, or ERC 
 ### Gate 3: drawing DRC
 
 - Projection method, view identity/alignment, 2D/3D and cross-view consistency, section truth, hidden/center lines, and feature multiplicity.
+- For separately constructed views, project every shared datum, axis, component envelope, repeated feature, and connection node into the other views and compare at a declared tolerance. Matching page appearance is not evidence that the views describe the same assembly.
+- Classify every plotted line as visible outline, hidden line, centerline, hatch, dimension/leader, or justified annotation. Flag unclassified geometry, centerlines extending into unrelated components, construction geometry on plotting layers, and hidden/detail lines that create unsupported visual noise.
 - Dimensions agree with geometry; no duplicate, contradictory, stale, detached, closed-chain, or visually ambiguous requirements.
 - Fits, tolerances, datum references, feature-control frames, surface texture, notes, material, scale, revision, and title-block data are complete only when justified.
 - Text, symbols, fonts, lineweights, hatches, viewports, and plot scale survive final export.
+- Compare stable-view before/after renders for revisions. Confirm that the visual difference covers the intended components/annotations only; investigate an empty delta, unrelated changed regions, or camera/layer/scale drift before accepting it as evidence.
 - Manufacturing and inspection information is sufficient for the intended release scope; unresolved data is explicit.
 
 ### Gate 4: assembly and motion DRC
@@ -129,6 +138,7 @@ Use a second route for critical requirements:
 - Project the 3D model into a drawing view and compare with native 2D geometry.
 - Recompute clearance from mating surfaces rather than rereading a dimension object.
 - Compare source and re-imported exchange geometry.
+- For 3D revisions, align by authoritative datums and compare component transforms, topology/body counts, bounding boxes, volume/mass properties where justified, critical surfaces/features, and boolean added/removed regions. Treat IoU/Dice or another aggregate similarity score as diagnostic only, never as proof that functional details are correct.
 - Test rule boundaries with just-below, exactly-at, and just-above threshold fixtures when creating or changing a validator.
 - Include an invalid-geometry fixture to prove precondition gating.
 
