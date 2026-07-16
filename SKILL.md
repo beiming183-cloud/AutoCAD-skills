@@ -20,7 +20,7 @@ Create readable manufacturing drawings, not decorative CAD illustrations. Treat 
 1. Classify the task and load only the required references: always read `references/gbt-drafting.md` for engineering drawings; read `references/autocad-mcp-workflow.md` for AutoCAD/MCP execution, `references/complex-assembly-drafting.md` for engines or other multi-system assembly drawings, `references/cad-workflows.md` for 2D/3D conversion or presentation, `references/cad-3d-modeling.md` for 3D parts/assemblies, `references/gps-inspection.md` for GD&T/GPS, tolerance-stack, or inspection work, `references/product-definition-release.md` for configurations, BOMs, revisions, MBD/PMI, dependencies, or release packages, `references/engineering-analysis.md` for any physical-performance calculation or simulation claim, and `references/drc-review.md` for every DRC, DFM, fit, interference, or release review.
 2. Inspect the source CAD, drawing, screenshot, and user requirements. Record concrete defects and separate supplied values from derived or assumed values.
 3. Preserve unrelated user geometry. Create a clean replacement in a separate area when extensive repair is needed; remove old geometry only when the user authorizes it.
-4. Confirm the sheet size, scale, units, projection method, CAD plot style, and required deliverable before laying out views. If any are unknown, state a conservative assumption.
+4. Confirm the sheet size, scale, units, projection method, CAD plot style, and required deliverable before laying out views. For a GB/T mechanical drawing, default to first-angle projection only when the user, approved project template, and source drawing do not specify another method; record the assumption and keep view placement, projection symbol, and title-block data consistent.
 5. Establish semantic layers and properties before geometry. Select line widths from the applicable standard series and the sheet/scale; keep a clear thick-to-thin ratio. A practical fallback is:
    - `OUTLINE`: thick continuous.
    - `THIN`: thin continuous.
@@ -33,7 +33,7 @@ Create readable manufacturing drawings, not decorative CAD illustrations. Treat 
 7. Lay out aligned orthographic views first and keep projection correspondence exact. Add sections only when they clarify internal geometry.
 8. Add dimensions from the part outward. Prefer functional datums; avoid closed chains, duplicates, crossings, and dimensions attached to hidden lines.
 9. Add tolerances, fits, surface texture, material, process notes, and title-block data only when supplied or technically justified. Mark unresolved production data as `TBD` or clearly identify it as assumed.
-10. Run the staged verification in the reference, then the presentation audit. Inspect model space and the final plotted/exported sheet at readable and full-sheet zoom before declaring completion.
+10. Run the selected verification tier and presentation checks. For Tier 1, inspect the active affected geometry/view and report deferred release gates; for Tier 3, inspect model space plus the current final plotted/exported sheet at readable and full-sheet zoom before declaring release readiness.
 
 ## CAD Execution Rules
 
@@ -41,6 +41,7 @@ Create readable manufacturing drawings, not decorative CAD illustrations. Treat 
 - Prefer associative dimension objects. Do not fake dimensions using loose text and arrows.
 - Keep geometry and annotation in their intended spaces. Verify viewport scale, annotation scale, and plot lineweights when paper space is used.
 - Keep centerlines beyond outlines by a small, even amount. Use proper center linetype; never use a continuous colored axis through the part.
+- For Chinese GB/T text, use a verified technical lettering style with complete Chinese/symbol coverage and faithful plotted output. Font filenames such as `gbenor`/`gbcbig` or TrueType substitutes are environment choices, not compliance evidence by themselves.
 - Put diameter symbols and fit designations in the dimension object or associated requirement, not as unrelated notes inside the part.
 - Keep dimension text horizontal where the active dimensioning method requires it and use a consistent text height.
 - Keep cutting-plane identifiers and section labels paired when the convention requires them. Call a simple end view an end view, not `SECTION A-A`.
@@ -51,8 +52,8 @@ Create readable manufacturing drawings, not decorative CAD illustrations. Treat 
 - Keep editable parametric/native CAD as the source of truth. Treat STEP/DXF/PDF exports, meshes, renders, and plots as derived artifacts unless no stronger source exists.
 - Use named parameters, stable datums/axes, native features, and native patterns. Build assemblies from explicit mating interfaces and degrees of freedom, not unexplained world-coordinate offsets.
 - Identify the exact configuration, revision, units, CAD/kernel/API versions, and external dependencies before mutation or release. Use semantic IDs/datums instead of volatile face/edge indices where possible, and prove that each intended edit changed the correct geometry rather than trusting a success flag.
-- Run incremental DRC on changed geometry and one full release DRC before handoff. A successful command or attractive render is not a passed design review.
-- For AutoCAD/MCP work, prove readiness before mutation, use bounded recovery, track created handles, prefer atomic transactions, and verify the actual plotted paper/scale plus re-imported DXF geometry. A successful IPC response, save, entity count, or manifest is not release evidence by itself.
+- Select the verification tier from `cad-workflows.md`. Use changed-scope checks for a narrow nonrelease edit; require full release DRC, final plot review, and applicable exchange re-import only for release/export handoff or when an escalation trigger invalidates global evidence. A successful command or attractive render is never a design-review pass by itself.
+- For AutoCAD/MCP work, prove readiness before mutation, use bounded recovery, track created handles, and prefer atomic transactions. For release/export work, also verify actual plotted paper/scale and re-imported DXF geometry; do not force those unchanged artifacts through a Tier 1 local edit. A successful IPC response, save, entity count, or manifest is not release evidence by itself.
 - For a complex assembly, require a parameter table, component tree, common datums, intended connection graph, and view plan before creating detailed entities. Build and review one coherent subsystem at a time; do not release a monolithic coordinate batch that has not passed intermediate topology and visual checks.
 - When native 3D, constraints, projection, trim/join, or reliable preview capabilities are unavailable, define the 2D fallback scope before drawing and label it accurately. Never present a separately estimated 2D concept as equivalent to a validated 3D assembly or manufacturing drawing.
 - Treat agent-generated manufacturing artifacts as `candidate after human review` unless an authorized external process records approval. Never turn missing evidence, stale waivers, or unavailable checks into a favorable release verdict.
@@ -72,4 +73,4 @@ Create readable manufacturing drawings, not decorative CAD illustrations. Treat 
 
 ## Revision Strategy
 
-For a poor existing drawing, create a clean replacement in a separate area first. Compare geometry, annotations, and plotted output, then erase the obsolete version only with explicit permission. In the final response, summarize corrected defects, assumptions, unresolved `TBD` items, files produced, and any compliance limitation.
+For an isolated defect with stable source geometry and identifiers, edit the responsible feature/entity in place, preserve a rollback point, and run targeted dependent checks. Create a clean replacement in a separate area only when defects are widespread, topology/view authority is unreliable, or repair would cross several subsystems/views. Compare geometry, annotations, and plotted output before replacing the obsolete version, and erase it only with explicit permission. In the final response, summarize corrected defects, assumptions, unresolved `TBD` items, files produced, deferred release checks, and any compliance limitation.

@@ -73,6 +73,7 @@ Run the native CAD/EDA application's own geometry checker, rebuild, DRC, or ERC 
 ### Gate 3: drawing DRC
 
 - Projection method, view identity/alignment, 2D/3D and cross-view consistency, section truth, hidden/center lines, and feature multiplicity.
+- Apply the GB/T anchor and simplified-representation rules from `gbt-drafting.md` when applicable, including projection method/symbol/title-block agreement, Chinese text rendering, and thread/gear/spline/spring/rolling-bearing representation rule IDs.
 - For separately constructed views, project every shared datum, axis, component envelope, repeated feature, and connection node into the other views and compare at a declared tolerance. Matching page appearance is not evidence that the views describe the same assembly.
 - Classify every plotted line as visible outline, hidden line, centerline, hatch, dimension/leader, or justified annotation. Flag unclassified geometry, centerlines extending into unrelated components, construction geometry on plotting layers, and hidden/detail lines that create unsupported visual noise.
 - Dimensions agree with geometry; no duplicate, contradictory, stale, detached, closed-chain, or visually ambiguous requirements.
@@ -130,7 +131,8 @@ Geometry alone can flag process risk; it does not predict mold flow, distortion,
 ## Incremental and Full DRC
 
 - After a local edit, run the cheapest checks that cover the changed feature and its dependents: sketch/profile validity, affected dimensions, neighboring clearances, cross-view projection, and local plot/render.
-- Run expensive full topology, all-body interference, all-view regeneration, and release export checks once the geometry stabilizes or whenever a global parameter/coordinate system changes.
+- A Tier 1 nonrelease edit does not require regeneration or re-import of unchanged PDF/DXF/STEP artifacts. Record deferred release gates and invalidate their cached evidence only when an input/dependency changed.
+- Run expensive full topology, all-body interference, all-view regeneration, final plot, exchange re-import, and release-package checks once the geometry stabilizes for release or whenever units, global parameters/datums/coordinates, projection, configuration, topology mapping, dependencies, or format schema changes.
 - Cache evidence by input content hash, configuration, rule-deck version, and validator version. Invalidate only affected results.
 - Stop when all applicable release-blocking rules pass and every remaining warning or `NOT_EVALUATED` item is disclosed. Repeating an unchanged passed check adds no confidence.
 
@@ -157,6 +159,7 @@ Use a machine-readable table or JSON plus a concise human summary. Each finding 
 ```text
 rule_id:
 scope/configuration:
+verification_tier: Tier 1 | Tier 2 | Tier 3
 status: PASS | FAIL | WARNING | NOT_EVALUATED | ERROR
 severity:
 requirement_source:
@@ -168,6 +171,7 @@ location_or_entities:
 method_and_tolerance:
 evidence:
 limitations:
+deferred_gates_and_escalation_triggers:
 recommended_action:
 ```
 

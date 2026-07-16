@@ -89,6 +89,8 @@ Create or verify one explicit setup contract before geometry:
 }
 ```
 
+When the drawing is governed by GB/T and the user, source, and approved template do not specify a projection method, use first-angle as a documented default. Do not infer projection from AutoCAD locale; verify view placement, projection symbol, and title-block field together.
+
 Apply the contract to actual CAD state, not only delivery metadata:
 
 - Drawing units and insertion units.
@@ -97,6 +99,8 @@ Apply the contract to actual CAD state, not only delivery metadata:
 - Paper-space layout, page setup, plot device, paper size, printable area, orientation, plot style, plot area, and scale mode.
 - Frame/title-block attributes, including the same sheet, projection, units, and scale values used by plotting.
 - External references, block definitions/attributes, fonts/SHX, plot styles, page setups, images, data links, custom/proxy objects, and support paths required for faithful plotting and editing.
+
+For Chinese text, verify the selected style against the applicable GB/T lettering requirements and the plotted artifact. Common AutoCAD mappings such as `gbenor` with `gbcbig`, or installed TrueType alternatives, are valid only after checking Chinese glyph coverage, technical-lettering proportions, missing/substituted symbols, text bounds, and PDF output.
 
 Prefer a safe whitelisted variable-setting operation. Restrict variable names, types, and ranges; read values back after setting. Do not bypass the bridge with arbitrary LISP merely to change units or dimension variables.
 
@@ -140,7 +144,7 @@ Prefer dry-run/preview modes for cleanup, relayering, topology repair, and other
 
 ## Geometry DRC
 
-Run geometry DRC before presentation review and again on the exported/re-imported artifact.
+Run changed-scope geometry DRC before presentation review. For Tier 3 release/export work, run it again on each applicable exported/re-imported artifact; do not regenerate an unaffected exchange file for Tier 1 merely to repeat the check.
 
 For lines, arcs, circles, and polylines, check:
 
@@ -229,7 +233,7 @@ Manufacturing output requires true involute geometry and process/tolerance data.
 
 ## Standard Workflow
 
-Use this sequence, skipping only steps that are genuinely inapplicable:
+Select the verification tier in `cad-workflows.md` before running this sequence. A Tier 1 local edit may stop after targeted mutation, recompute, changed-handle/geometry proof, dependent checks, and one affected-view inspection; do not perform unchanged plot/export/re-import steps merely to complete the list. Use the full sequence for Tier 3 release work, skipping only genuinely inapplicable artifacts.
 
 ```text
 discover capabilities and installation

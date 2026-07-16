@@ -91,29 +91,37 @@ Use 3D display to explain geometry and reveal semantic errors, not as decoration
 
 ## Risk-Scaled Verification
 
-### Low risk
+Choose the tier from change blast radius, semantic dependencies, requested deliverable, and release intent. Record the tier, why it applies, checks run, cached evidence reused, and deferred gates.
 
-Use for a simple unchanged part or narrow annotation edit:
+### Tier 1: local fast path
 
-- Run one deterministic geometry/dimension pass.
-- Check the affected view and the final full-sheet plot.
-- Produce one isometric review image only when visible geometry changed or the user requested 3D presentation.
+Use only for a narrow nonrelease edit with known stable identifiers and no change to units, coordinate frame, projection, configuration, global parameters, topology ownership, BOM/effectivity, external dependencies, or export schema. Examples include one supplied tolerance value, thread designation/size, isolated chamfer parameter, or local note.
 
-### Medium risk
+- Capture the before-state of target parameters, handles/features, affected dimensions, and local geometry fingerprint.
+- Apply the smallest source edit, recompute, and prove the requested post-state on the same semantic targets.
+- Check changed geometry/profile validity plus direct dependents, neighboring clearance/topology, and affected drawing view/annotation.
+- Inspect the active local view or one stable cropped preview when visible geometry changed. Do not force PDF regeneration, DXF/STEP re-import, full-sheet rendering, or all-body interference when those artifacts/dependencies are unaffected and no release/export is requested.
+- Report that release/export gates were deferred; Tier 1 is not a manufacturing-release verdict.
+
+### Tier 2: affected-system verification
 
 Use for new multi-view parts, sections, patterns, internal features, or format conversion:
 
 - Run whole-drawing checks plus independent cross-view reconstruction on critical features.
-- Review front/top/side plus isometric output; add a section when internal geometry matters.
+- Regenerate only affected views/derivatives and produce one fresh risk-specific preview set; add a section when internal geometry matters.
 - Recheck every changed dimension, section, and conversion-sensitive annotation.
+- Re-import an exchange artifact only when the edit changed that artifact, its schema-sensitive content, or the user requested a candidate export.
 
-### High risk
+### Tier 3: full release verification
 
-Use for assemblies, fit-critical interfaces, safety-related parts, conflicting inputs, or manufacturing release:
+Use for assemblies, fit-critical interfaces, safety-related parts, conflicting inputs, global changes, or manufacturing/release handoff:
 
 - Verify every specified critical dimension and interface with an independent calculation or measurement route.
 - Check mating alignment, clearances/interference, motion envelopes when defined, material continuity, and section truth.
+- Run full applicable geometry/drawing/assembly/DFM/GPS gates, regenerate and inspect the final plotted sheet, re-import critical exchange formats, and build the revision-bound release evidence manifest.
 - Require explicit resolution or a documented `needs_review` finding for every conflict. Add engineering analysis only when loads, materials, boundary conditions, and acceptance criteria are available.
+
+Escalate immediately to Tier 2 or Tier 3 when an edit changes units, global coordinates/datums, projection method, model orientation, global parameters, configurations, topology/stable-ID mapping, assembly constraints, cross-view authority, title block/revision, BOM, external dependencies, file schema, or a release-critical requirement; also escalate when unexpected entities change or the local proof is inconclusive.
 
 Stop when all applicable deterministic checks pass, visual review finds no unexplained issue, and high-risk conflicts are resolved or explicitly reported. Do not repeat unchanged low-risk checks without a new reason.
 

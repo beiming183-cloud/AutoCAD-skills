@@ -25,6 +25,9 @@ Use the following standards as the core baseline. Their status was checked on th
 - GB/T 4459.1-1995, Mechanical drawings - Representation of screw threads and threaded fasteners.
 - GB/T 4459.2-2003, Mechanical drawings - Representation of gears.
 - GB/T 4459.3-2000, Mechanical drawings - Representation of splines.
+- GB/T 4459.4-2003, Mechanical drawings - Representation of springs.
+- GB/T 4459.5-1999, Mechanical drawings - Representation of centre holes.
+- GB/T 4459.7-2017, Mechanical drawings - Representation of rolling bearings.
 - GB/T 1182-2018, Geometrical product specifications (GPS) - Geometrical tolerancing - Tolerances of form, orientation, location and run-out.
 - GB/T 131-2006, Technical product documentation - Indication of surface texture in technical product documentation.
 - GB/T 1800.1-2020 and GB/T 1800.2-2020, ISO code system for tolerances on linear sizes.
@@ -42,6 +45,12 @@ Official metadata source: National Public Service Platform for Standards, State 
 - Record the standard number and edition actually applied to each contractual symbol/rule. Do not combine examples or remembered conventions from different editions into an undocumented hybrid.
 
 ## Practical Rules
+
+### GB/T anchor rules
+
+- Use first-angle projection as the GB/T workflow default only when the user, approved project template, and source drawing leave the method unspecified. Record that assumption; never mix first-angle view placement with a third-angle symbol or title-block declaration.
+- Use the applicable standard sheet/frame and place the title block in the standard lower-right location unless an approved organization template defines another valid arrangement. Verify fields, orientation, and plot margins on the actual sheet.
+- Use a Chinese engineering lettering style that satisfies the selected GB/T 14691 edition, including required Chinese-character proportions and plotted height/stroke. AutoCAD font mappings such as `gbenor`/`gbcbig`, SimHei, or FangSong are implementation-specific fallbacks; verify glyph coverage, substitutions, width/proportion, symbols, and PDF output rather than declaring compliance from the filename.
 
 ### Line hierarchy
 
@@ -76,6 +85,23 @@ Official metadata source: National Public Service Platform for Standards, State 
 - A section view requires a cutting plane and matching identifiers unless its location and convention make the meaning unambiguous.
 - Hatch only cut material. Keep one angle and spacing for the same part, usually 45 degrees with even spacing.
 - Do not hatch holes, slots, keyways, or space outside the material boundary.
+
+### Standard simplified representations
+
+- Keep the detailed manufacturing model and the standardized 2D representation as separate evidence. A routine drawing view should not project helical thread edges, every gear tooth, every spline tooth, every spring turn, or every rolling element merely because the 3D model contains them.
+- For screw threads under GB/T 4459.1, use the applicable simplified external/internal-thread convention and a complete thread callout. For a visible external thread, keep the major-diameter boundary thick and the minor-diameter boundary thin. In an end view, draw the applicable thin diameter as an approximately three-quarter circle with the required opening rather than a full visually estimated circle. Verify thread termination, runout/length, section hatching, engagement, and designation as applicable.
+- For gears under GB/T 4459.2, use the prescribed addendum, pitch, root, axis, mesh, and section conventions for the selected view/representation level. Do not substitute a decorative repeated-tooth polyline for either a valid manufacturing tooth form or a standard simplified drawing.
+- Apply GB/T 4459.3, GB/T 4459.4, GB/T 4459.5, and GB/T 4459.7 when splines, springs, centre holes, or rolling bearings appear. Select the permitted simplified/schematic/detailed representation for the drawing purpose and keep the associated designation, quantity, section, and BOM data consistent.
+
+Instantiate at least these release DRC rules when applicable:
+
+- `GBT_PROJECTION_METHOD`: method, view placement, symbol, and title-block declaration agree.
+- `GBT_TITLE_BLOCK_LAYOUT`: sheet/frame/title-block placement, fields, margins, and orientation match the approved template/standard.
+- `GBT_CHINESE_TEXT_RENDER`: required glyphs, technical lettering style, plotted size/proportion, font substitution, and PDF output pass.
+- `GBT_THREAD_REPRESENTATION`: external/internal boundaries, end view, termination, section behavior, and callout match the selected standard edition.
+- `GBT_GEAR_REPRESENTATION`, `GBT_SPLINE_REPRESENTATION`, `GBT_SPRING_REPRESENTATION`, `GBT_CENTRE_HOLE_REPRESENTATION`, and `GBT_BEARING_REPRESENTATION`: the selected representation level and related annotations/BOM agree with geometry and purpose.
+
+Each result must record the standard edition, drawing/view/entity IDs, representation level, evidence, and any unsupported semantic object. A visually familiar symbol without traceable applicability is not a pass.
 
 ### Shaft-specific checklist
 
@@ -124,6 +150,7 @@ Apply this pass to changed geometry, manufacturing-critical features, dense inte
 - Profiles that must be closed are closed, duplicate entities are removed, and no stray construction geometry will plot.
 - Sheet/frame/title block follows the chosen standard and scale.
 - Projection method and view alignment are consistent.
+- Projection symbol and title-block declaration agree with the actual first-/third-angle view placement.
 - Visible, hidden, center, dimension, and hatch lines are visually distinct.
 - All dimensions use one style, text height, arrow size, precision, and unit convention.
 - No dimension crosses the part unnecessarily; no dimension is shown diagonally for a horizontal axial length.
@@ -131,5 +158,6 @@ Apply this pass to changed geometry, manufacturing-critical features, dense inte
 - Section hatching is bounded, evenly spaced, and excludes voids.
 - Notes do not overlap geometry or dimensions.
 - Viewports, annotation scales, fonts, symbols, and lineweights survive the final PDF/plot/export.
+- Chinese text has no missing/substituted glyphs, and applicable thread/gear/spline/spring/bearing representations pass their GB/T rule IDs.
 - Assumed and unresolved production requirements are disclosed; no invented value is presented as user-approved design intent.
 - The drawing contains enough information to manufacture and inspect the part without duplicate or contradictory requirements.
