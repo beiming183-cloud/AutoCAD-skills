@@ -20,6 +20,11 @@ Use the following standards as the core baseline. Their status was checked on th
 
 ### Apply when required by the drawing
 
+- GB/T 10609.2-2009, Technical drawings - Item lists.
+- GB/T 4458.2-2003, Mechanical drawings - Item references on assembly drawings and their arrangement.
+- GB/T 4459.1-1995, Mechanical drawings - Representation of screw threads and threaded fasteners.
+- GB/T 4459.2-2003, Mechanical drawings - Representation of gears.
+- GB/T 4459.3-2000, Mechanical drawings - Representation of splines.
 - GB/T 1182-2018, Geometrical product specifications (GPS) - Geometrical tolerancing - Tolerances of form, orientation, location and run-out.
 - GB/T 131-2006, Technical product documentation - Indication of surface texture in technical product documentation.
 - GB/T 1800.1-2020 and GB/T 1800.2-2020, ISO code system for tolerances on linear sizes.
@@ -34,6 +39,7 @@ Official metadata source: National Public Service Platform for Standards, State 
 - Preserve the source precision. Do not add decimal places that imply unsupported accuracy.
 - Use `TBD` or an explicit assumption for missing production data. Never silently convert a plausible choice into a requirement.
 - Resolve contradictions between geometry, dimensions, notes, and title-block data before claiming manufacturability.
+- Record the standard number and edition actually applied to each contractual symbol/rule. Do not combine examples or remembered conventions from different editions into an undocumented hybrid.
 
 ## Practical Rules
 

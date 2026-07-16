@@ -1,6 +1,6 @@
 ---
 name: mechanical-drafting-gbt
-description: Create, revise, audit, validate, and present mechanical CAD using Chinese GB/T drafting conventions. Use for AutoCAD and AutoCAD MCP workflows, parametric 3D parts and assemblies, complex mechanical assemblies and engine concept drawings, DXF/DWG/PDF/STEP workflows, CAD design-rule checks (DRC), design-for-manufacturing (DFM) reviews, shafts, sleeves, flanges, gears, planetary gear sets, machined parts, assembly and detail drawings, orthographic projection, views and sections, dimensions, fits and tolerances, surface texture, title blocks, line types, topology and connection audits, 2D/3D cross-verification, 3D review presentations, and drawing-standard compliance reviews.
+description: Create, revise, audit, validate, and present mechanical CAD using Chinese GB/T drafting conventions. Use for AutoCAD/AutoCAD MCP; parametric 2D/3D parts, complex assemblies, mechanisms, engines, gears, and machined parts; DXF/DWG/PDF/STEP and model-based definition workflows; assembly/detail drawings and cross-view verification; dimensions, fits, GD&T/GPS, surface texture, tolerance stacks, and inspection planning; BOMs, item balloons, configurations, revisions, and release packages; CAD DRC/DFM, physical plausibility, engineering-analysis evidence, and drawing-standard compliance.
 ---
 
 # GB/T Mechanical Drafting
@@ -17,7 +17,7 @@ Create readable manufacturing drawings, not decorative CAD illustrations. Treat 
 
 ## Required Workflow
 
-1. Classify the task and load only the required references: always read `references/gbt-drafting.md` for engineering drawings; read `references/autocad-mcp-workflow.md` for AutoCAD/MCP execution, `references/complex-assembly-drafting.md` for engines or other multi-system assembly drawings, `references/cad-workflows.md` for 2D/3D conversion or presentation, `references/cad-3d-modeling.md` for 3D parts/assemblies, and `references/drc-review.md` for every DRC, DFM, fit, interference, or release review.
+1. Classify the task and load only the required references: always read `references/gbt-drafting.md` for engineering drawings; read `references/autocad-mcp-workflow.md` for AutoCAD/MCP execution, `references/complex-assembly-drafting.md` for engines or other multi-system assembly drawings, `references/cad-workflows.md` for 2D/3D conversion or presentation, `references/cad-3d-modeling.md` for 3D parts/assemblies, `references/gps-inspection.md` for GD&T/GPS, tolerance-stack, or inspection work, `references/product-definition-release.md` for configurations, BOMs, revisions, MBD/PMI, dependencies, or release packages, `references/engineering-analysis.md` for any physical-performance calculation or simulation claim, and `references/drc-review.md` for every DRC, DFM, fit, interference, or release review.
 2. Inspect the source CAD, drawing, screenshot, and user requirements. Record concrete defects and separate supplied values from derived or assumed values.
 3. Preserve unrelated user geometry. Create a clean replacement in a separate area when extensive repair is needed; remove old geometry only when the user authorizes it.
 4. Confirm the sheet size, scale, units, projection method, CAD plot style, and required deliverable before laying out views. If any are unknown, state a conservative assumption.
@@ -50,10 +50,12 @@ Create readable manufacturing drawings, not decorative CAD illustrations. Treat 
 - Separate geometric/kinematic plausibility from engineering performance. Without loads, material properties, boundary conditions, and acceptance criteria, do not claim strength, stiffness, fatigue, thermal, fluid, or safety validation.
 - Keep editable parametric/native CAD as the source of truth. Treat STEP/DXF/PDF exports, meshes, renders, and plots as derived artifacts unless no stronger source exists.
 - Use named parameters, stable datums/axes, native features, and native patterns. Build assemblies from explicit mating interfaces and degrees of freedom, not unexplained world-coordinate offsets.
+- Identify the exact configuration, revision, units, CAD/kernel/API versions, and external dependencies before mutation or release. Use semantic IDs/datums instead of volatile face/edge indices where possible, and prove that each intended edit changed the correct geometry rather than trusting a success flag.
 - Run incremental DRC on changed geometry and one full release DRC before handoff. A successful command or attractive render is not a passed design review.
 - For AutoCAD/MCP work, prove readiness before mutation, use bounded recovery, track created handles, prefer atomic transactions, and verify the actual plotted paper/scale plus re-imported DXF geometry. A successful IPC response, save, entity count, or manifest is not release evidence by itself.
 - For a complex assembly, require a parameter table, component tree, common datums, intended connection graph, and view plan before creating detailed entities. Build and review one coherent subsystem at a time; do not release a monolithic coordinate batch that has not passed intermediate topology and visual checks.
 - When native 3D, constraints, projection, trim/join, or reliable preview capabilities are unavailable, define the 2D fallback scope before drawing and label it accurately. Never present a separately estimated 2D concept as equivalent to a validated 3D assembly or manufacturing drawing.
+- Treat agent-generated manufacturing artifacts as `candidate after human review` unless an authorized external process records approval. Never turn missing evidence, stale waivers, or unavailable checks into a favorable release verdict.
 - When a tool cannot create or verify required linetypes, symbols, fonts, dimension styles, or plot behavior, state the limitation and use the closest documented fallback. Do not claim full compliance.
 
 ## Progressive References
@@ -63,6 +65,9 @@ Create readable manufacturing drawings, not decorative CAD illustrations. Treat 
 - `references/complex-assembly-drafting.md`: complex assembly classification, parameterized skeletons, component/connectivity planning, staged construction, topology checks, view consistency, line cleanup, and release gates.
 - `references/cad-workflows.md`: evidence hierarchy, native 2D editing, 3D-backed drawing, 2D-to-3D consistency reconstruction, PDF/image intake, 3D review packets, tool routing, and risk-scaled validation.
 - `references/cad-3d-modeling.md`: parametric solid/surface modeling, assemblies, motion, representation choice, exchange formats, iteration, and 3D presentation.
+- `references/gps-inspection.md`: GD&T/GPS semantics, datum systems, tolerance stacks, model/drawing agreement, inspection planning, and measurement uncertainty.
+- `references/product-definition-release.md`: configuration/revision authority, stable identity, BOM/balloons, dependencies, semantic change review, interoperability, and reproducible release packages.
+- `references/engineering-analysis.md`: dimensional and conservation checks, load cases, hand calculations, structural/thermal/fluid analysis evidence, convergence, and claim boundaries.
 - `references/drc-review.md`: deterministic validator contract, universal geometry and drawing gates, assembly checks, process-specific DFM, severity, evidence, and release reporting.
 
 ## Revision Strategy

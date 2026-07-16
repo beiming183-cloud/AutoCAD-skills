@@ -26,8 +26,9 @@ Treat readiness as an idempotent state transition, not as a side effect of a sta
 2. Inspect whether AutoCAD is running and identify the actual product/version.
 3. Wait for an active document or create one only when the user requested a new drawing.
 4. Verify that the dispatcher/bridge is loaded, compatible, and responsive with a version handshake and IPC ping.
-5. Prefer an exposed `system.ensure_ready`-style operation when available. Otherwise execute the equivalent discover/start/wait/load/handshake/ping steps using only exposed safe tools.
-6. Keep `status` observational. Do not hide startup, LISP loading, document creation, or retries inside a call presented as read-only.
+5. Record AutoCAD product/build, dispatcher/bridge/backend versions, transport, protocol/API schema, enabled toolset/capability manifest, and relevant parameter/response schemas. After an upgrade or mismatch, run harmless read-only probes before trusting mutable calls.
+6. Prefer an exposed `system.ensure_ready`-style operation when available. Otherwise execute the equivalent discover/start/wait/load/handshake/ping steps using only exposed safe tools.
+7. Keep `status` observational. Do not hide startup, LISP loading, document creation, or retries inside a call presented as read-only.
 
 Return or record separate state for installation, process, document, dispatcher version, transport, and readiness. Never infer the product edition from a missing window or dispatcher error.
 
@@ -43,6 +44,8 @@ Use bounded recovery:
 Treat any payload containing an error as failure even when an outer MCP wrapper incorrectly reports `isError: false`. Normalize nested text JSON before deciding whether an operation succeeded.
 
 After every mutable operation, inspect command completion, document state, transaction result, created/modified handles, and any rebuild/constraint warnings before issuing dependent operations. A nominally successful response with an empty trim, failed join, unsolved constraint, partial batch, or stale document is not success.
+
+Compare requested targets/values with actual post-operation entities and a changed-handle/geometry fingerprint. Treat `ok` with no intended semantic difference, unexpected auto-adjustment, or changes outside the target set as failure or `needs_review`.
 
 Prefer structured failures containing:
 
@@ -93,6 +96,7 @@ Apply the contract to actual CAD state, not only delivery metadata:
 - Text, dimension, leader, and table styles.
 - Paper-space layout, page setup, plot device, paper size, printable area, orientation, plot style, plot area, and scale mode.
 - Frame/title-block attributes, including the same sheet, projection, units, and scale values used by plotting.
+- External references, block definitions/attributes, fonts/SHX, plot styles, page setups, images, data links, custom/proxy objects, and support paths required for faithful plotting and editing.
 
 Prefer a safe whitelisted variable-setting operation. Restrict variable names, types, and ranges; read values back after setting. Do not bypass the bridge with arbitrary LISP merely to change units or dimension variables.
 
@@ -164,6 +168,7 @@ Keep preview and release plotting semantically distinct:
 - If only PDF is available, rasterize it with an available structured PDF renderer and disclose the fallback; do not pretend the PDF path is a PNG preview.
 - Require a unique output name or explicit overwrite and verify a content hash or modification identity so a cached preview cannot be mistaken for the current drawing.
 - For iterative work, keep camera/view, layer visibility, background, resolution, and scale stable enough to produce a meaningful before/after visual difference. An empty difference may indicate a stale preview; an unrelated difference indicates unintended mutation or unstable rendering state.
+- Check image dimensions and nonblank/nonuniform pixel content before visual review. Request metadata/thumbnails and only the risk-specific full-resolution views needed for evidence; do not flood the agent context with redundant unchanged images.
 
 For every release plot, explicitly set and verify:
 
@@ -196,6 +201,8 @@ For DXF, record and compare:
 Compare the source drawing, DXF re-import, plotted PDF, and manifest as different evidence channels. A matching total entity count is only a coarse inventory check.
 
 The final report must state actual files, paper, plot scale, units, DRC results, re-import comparison, assumptions, unsupported objects, and every `NOT_EVALUATED` item.
+
+For formal release, apply `product-definition-release.md`: package required Xrefs/fonts/plot styles/templates or report them as external dependencies, and bind every artifact to the exact drawing revision/configuration and producing AutoCAD/bridge versions.
 
 Require entity queries to return the parameters needed for repair and proof, including handles, endpoints, arc angles/endpoints, polyline vertices/bulges, MText width/bounds, block membership, groups, constraints, and associative relationships. Mark affected checks `NOT_EVALUATED` when the bridge omits required fields.
 

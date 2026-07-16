@@ -13,6 +13,7 @@ Before editing geometry, record a concise internal brief:
 - Named parameters and expected envelope.
 - Part/component graph, mating interfaces, degrees of freedom, and motion limits.
 - Assumptions, unresolved requirements, and validation targets.
+- CAD application, geometric kernel, plug-in/API schema, generator/library versions, and external dependencies that can change rebuild or export behavior.
 
 Dimensioned requirements outrank visual proportions. Flag contradictions instead of silently selecting one.
 
@@ -36,7 +37,8 @@ Before operating a live CAD session, inspect the active document, units, design 
 4. Add one logical feature at a time and recompute after each operation. Treat a null/failed feature result as failure even when the API raises no exception.
 5. Use native holes, fillets, chamfers, shells, ribs, drafts, and feature patterns. Create one seed plus a native linear/polar pattern instead of manually copying repeated geometry when practical.
 6. Reference stable datum geometry or named interfaces instead of volatile face/edge indices when the CAD system permits it.
-7. Check body count, connectivity, validity, bounding box, volume, mass properties when material data exists, and every requirement changed by the feature.
+7. After feature reorder, suppression, boolean, fillet/chamfer, import healing, or parameter change, verify that downstream references still resolve to the intended semantic faces/edges. A rebuilt model can be geometrically valid while attached to the wrong topology.
+8. Check body count, connectivity, validity, bounding box, volume, mass properties when material data exists, and every requirement changed by the feature. Compare requested and actual geometry so an empty cut, no-op update, unintended extra body, or auto-adjusted feature cannot pass on status alone.
 
 For surfaces, additionally check trim boundaries, gaps, self-intersections, normal orientation, and the required positional/tangent/curvature continuity. Sew to a watertight shell before claiming a solid.
 
@@ -47,6 +49,7 @@ For surfaces, additionally check trim boundaries, gaps, self-intersections, norm
 - Position structural parts with native mates/constraints or explicit named interfaces. Do not use unexplained final translations to make one pose look assembled.
 - Give every separate body a physical role: fabricated part, fastener, bearing, seal, cable, purchased component, or documented analysis envelope.
 - Verify the intended degrees of freedom, constraint convergence, mating-axis alignment, contact/clearance, fastener stack, service access, and component count.
+- Verify every released configuration/variant separately. Confirm suppression state, part revision, quantity, mate set, envelope, mass properties, BOM applicability, and drawing-view linkage for the selected configuration.
 - Require zero unintended positive-volume collisions. Distinguish touching contact from penetration and document any intentional bonded, welded, overmolded, or press-fit overlap.
 - For motion, check swept or sampled interference at enough positions to catch thin obstacles. State step size and tunneling risk when using discrete samples.
 

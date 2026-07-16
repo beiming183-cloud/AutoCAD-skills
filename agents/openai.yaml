@@ -1,4 +1,4 @@
 interface:
   display_name: "AutoCAD GB/T Mechanical Drafting"
   short_description: "AutoCAD drafting, DRC, and 2D/3D verification"
-  default_prompt: "Create or revise the AutoCAD mechanical drawing using current GB/T conventions. For complex assemblies, establish shared parameters, components, datums, and intended connections before geometry. Run risk-scaled topology, geometry, view, and presentation DRC; inspect the actual plot; and report evidence plus every limitation."
+  default_prompt: "Create or revise the mechanical CAD using verified GB/T editions. Establish the exact revision/configuration, parameters, semantic references, dependencies, and acceptance evidence before release. Run risk-scaled geometry, topology, view, GPS/inspection, analysis, interoperability, and presentation gates as applicable; report every limitation and require external human approval for manufacturing release."

@@ -7,11 +7,12 @@ Read this reference when the task includes DXF, DWG, PDF, images, STEP/STP, 2D-t
 Use the strongest available evidence and retain provenance for every extracted or inferred requirement:
 
 1. User-approved requirements, dimensions, notes, and revision instructions.
-2. Trusted native parametric geometry and associative drawing data.
-3. Verified neutral CAD geometry such as STEP/STP or structured DXF entities.
-4. Vector PDF geometry and embedded text.
-5. Rasterized pages, screenshots, and OCR output.
-6. Visual proportion estimates.
+2. Approved product/configuration/revision records, BOM/effectivity, inspection/analysis requirements, and external release decisions.
+3. Trusted native parametric geometry and associative drawing/PMI data.
+4. Verified neutral CAD geometry such as STEP/STP or structured DXF entities.
+5. Vector PDF geometry and embedded text.
+6. Rasterized pages, screenshots, and OCR output.
+7. Visual proportion estimates.
 
 Never let a weaker source silently override a stronger one. Flag contradictions between two equally authoritative sources. Treat OCR and visual estimates as review evidence, not manufacturing truth.
 
@@ -127,3 +128,5 @@ Preserve the original source. Return only the formats justified by the task, typ
 - A verification summary listing each check, evidence or measurement, result, assumptions, `needs_review` items, and unsupported claims.
 
 Report only checks that actually ran. State whether physical review covered geometry/assembly plausibility only or included a real engineering calculation/simulation.
+
+For configurations, BOMs, MBD/PMI, inspection, analysis, or manufacturing release, load the corresponding progressive references from `SKILL.md` and produce a revision-bound evidence manifest rather than an unversioned file collection.

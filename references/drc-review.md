@@ -13,7 +13,7 @@ There is no universal `manufacturable` result. Process, material, machine, tooli
 Every rule must define:
 
 - Stable rule ID, domain, description, severity, and applicability condition.
-- Source of the requirement: user specification, GB/T/other named standard, organization rule, vendor rule, or clearly labeled typical guidance.
+- Source of the requirement: user specification, GB/T/other named standard with edition, organization rule, vendor rule, or clearly labeled typical guidance.
 - Explicit units, threshold, inclusivity at the boundary, tolerance, datum/direction, and configuration.
 - Required representation and preconditions: native model, valid B-rep solid, watertight manifold mesh, structured DXF, drawing view, or assembly.
 - Deterministic algorithm and any sampling density/error bound.
@@ -43,6 +43,7 @@ Never suppress, exclude, downgrade, or waive a finding merely to make a gate pas
 ### Gate 0: intake and rule applicability
 
 - Identify revision, units, coordinate system, configuration, material, manufacturing process, supplier/machine limits, and intended use.
+- Identify CAD/kernel/API/rule-deck versions, source commit/native version, external dependencies, and the exact variant/configuration/effectivity under review.
 - Select the applicable rule deck and record unknown inputs.
 - Establish which source/model/drawing is authoritative and whether derived files are stale.
 - Build a cross-reference matrix when several artifacts define the design: requirement/specification, native model, drawing, BOM, standard/purchased-part data, and release export. Missing or contradictory mappings are findings even when each file is internally valid.
@@ -54,6 +55,7 @@ Never suppress, exclude, downgrade, or waive a finding merely to make a gate pas
 - Mesh: watertight/manifold when required, oriented normals, no self-intersections, degenerate faces, isolated fragments, or nonfinite coordinates; record tessellation tolerance.
 - DXF/DWG: supported entity types, explicit `$INSUNITS`, expected `$ACADVER`, layers/layouts, no corrupt blocks, and no unsupported proxy objects that affect the review.
 - PDF/image: classify vector/raster/mixed and record extraction/OCR confidence.
+- Dependency closure: required Xrefs, fonts, plot styles, templates, linked data, standard-part libraries, custom objects, and scripts are present/versioned or explicitly external; missing dependencies that change geometry, annotations, or plots fail representation validity.
 
 Do not run downstream exact-geometry rules on a representation that failed its preconditions.
 Run the native CAD/EDA application's own geometry checker, rebuild, DRC, or ERC when available. External scripts add targeted evidence; they do not replace a required native-tool verification run.
@@ -75,6 +77,7 @@ Run the native CAD/EDA application's own geometry checker, rebuild, DRC, or ERC 
 - Classify every plotted line as visible outline, hidden line, centerline, hatch, dimension/leader, or justified annotation. Flag unclassified geometry, centerlines extending into unrelated components, construction geometry on plotting layers, and hidden/detail lines that create unsupported visual noise.
 - Dimensions agree with geometry; no duplicate, contradictory, stale, detached, closed-chain, or visually ambiguous requirements.
 - Fits, tolerances, datum references, feature-control frames, surface texture, notes, material, scale, revision, and title-block data are complete only when justified.
+- When GPS/GD&T or formal inspection is in scope, apply `gps-inspection.md`; verify semantic feature associations, datum precedence, tolerance-zone meaning, inspection feasibility, and model/drawing/PMI agreement rather than symbol appearance alone.
 - Text, symbols, fonts, lineweights, hatches, viewports, and plot scale survive final export.
 - Compare stable-view before/after renders for revisions. Confirm that the visual difference covers the intended components/annotations only; investigate an empty delta, unrelated changed regions, or camera/layer/scale drift before accepting it as evidence.
 - Manufacturing and inspection information is sufficient for the intended release scope; unresolved data is explicit.
@@ -121,6 +124,7 @@ Geometry alone can flag process risk; it does not predict mold flow, distortion,
 - For DXF, compare entity counts by type and layer, canonical geometry fingerprints at a declared coordinate tolerance, polyline vertex/closed/bulge data, circles and arcs, Unicode text, dimension-object preservation, `$INSUNITS`, `$ACADVER`, extents, and critical measurements. Equal total entity counts alone are insufficient evidence.
 - Review plotted PDF/images and 3D review views for clipping, missing symbols/fonts, stale geometry, wrong visibility, and presentation errors.
 - Confirm the original/source, derived artifacts, revision identifiers, DRC report, and `NOT_EVALUATED` items are traceable.
+- Apply `product-definition-release.md` for configurations, BOM/balloon mapping, dependency closure, semantic change review, manifest hashes, release verdict, and external approval status.
 - Prefer a structured conversion/status report as the automation contract. Read detailed logs only when the status report is incomplete or failed; a zero exit code without the expected output and evidence is not success.
 
 ## Incremental and Full DRC
@@ -143,6 +147,8 @@ Use a second route for critical requirements:
 - Include an invalid-geometry fixture to prove precondition gating.
 
 Independence means a different calculation path or representation, not running the same command twice.
+
+When a physical-performance claim is in scope, apply `engineering-analysis.md`. A valid CAD model and passing geometry DRC are preconditions, not evidence of strength, fatigue, thermal, fluid, vibration, wear, or safety performance.
 
 ## DRC Report
 
