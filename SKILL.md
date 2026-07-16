@@ -5,6 +5,8 @@ description: Create, revise, audit, validate, and present mechanical CAD using C
 
 # GB/T Mechanical Drafting
 
+Chinese maintenance mirror: [`SKILL.zh-CN.md`](SKILL.zh-CN.md).
+
 Create readable manufacturing drawings, not decorative CAD illustrations. Treat geometry, line hierarchy, view layout, dimensions, and notes as one system.
 
 ## Portability Contract
