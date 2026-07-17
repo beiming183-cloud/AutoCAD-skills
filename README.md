@@ -97,18 +97,7 @@ See the [consumer-product gate example](examples/consumer-product-review.md) and
 
 ## The release gates
 
-```mermaid
-flowchart LR
-    A[Brief and evidence] --> B[Concept or parameter skeleton]
-    B --> C[Create or revise CAD]
-    C --> D[Read back actual entities]
-    D --> E{Requested equals actual?}
-    E -- No --> X[Rollback and hard stop]
-    E -- Yes --> F[Geometry and semantic DRC]
-    F --> G[Cross-view and product review]
-    G --> H[Plot and exchange verification]
-    H --> I[Candidate after human review]
-```
+![Evidence-gated mechanical CAD release workflow](assets/release-gates-en.svg)
 
 Stable checks include:
 

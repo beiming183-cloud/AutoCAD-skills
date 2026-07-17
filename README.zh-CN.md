@@ -94,18 +94,7 @@ Codex 将仓库 Skill 安装到 `$CODEX_HOME/skills`。Claude Code 按其[官方
 
 ## 发布门流程
 
-```mermaid
-flowchart LR
-    A[简报与证据] --> B[概念或参数骨架]
-    B --> C[创建或修改 CAD]
-    C --> D[回读实际实体]
-    D --> E{请求值等于实际值?}
-    E -- 否 --> X[回滚并硬停止]
-    E -- 是 --> F[几何与语义 DRC]
-    F --> G[跨视图与产品评审]
-    G --> H[打印和交换格式验证]
-    H --> I[人工评审后候选]
-```
+![机械 CAD 证据闸门流程](assets/release-gates-zh.svg)
 
 稳定规则包括：
 

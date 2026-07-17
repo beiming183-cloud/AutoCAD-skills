@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="520" viewBox="0 0 1600 520" role="img" aria-labelledby="title desc">
+  <title id="title">Evidence-gated mechanical CAD release workflow</title>
+  <desc id="desc">Seven stages from brief to human release, with a red rollback branch when requested and actual CAD values differ.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#111827"/>
+    </marker>
+    <marker id="red-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#e63946"/>
+    </marker>
+  </defs>
+  <rect width="1600" height="520" fill="#f7f7f2"/>
+  <rect x="0" y="0" width="14" height="520" fill="#e63946"/>
+  <rect x="14" y="0" width="6" height="520" fill="#0b7a75"/>
+  <g font-family="Segoe UI, Arial, sans-serif" fill="#111827">
+    <text x="58" y="58" font-size="15" font-weight="700" fill="#0b7a75">AUTOCAD SKILLS / RELEASE LOGIC</text>
+    <text x="58" y="104" font-size="38" font-weight="750">Evidence-gated mechanical CAD</text>
+    <text x="58" y="132" font-size="17" fill="#4b5563">Every mutable result is read back. Every design verdict names its evidence boundary.</text>
+  </g>
+  <g fill="none" stroke="#111827" stroke-width="2.5" marker-end="url(#arrow)">
+    <path d="M240 222 H266"/><path d="M458 222 H484"/><path d="M676 222 H702"/>
+    <path d="M894 222 H920"/><path d="M1112 222 H1138"/><path d="M1330 222 H1356"/>
+  </g>
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <g fill="#ffffff" stroke="#c7c9c5" stroke-width="2">
+      <rect x="50" y="164" width="190" height="116" rx="6"/>
+      <rect x="268" y="164" width="190" height="116" rx="6"/>
+      <rect x="486" y="164" width="190" height="116" rx="6"/>
+      <rect x="704" y="164" width="190" height="116" rx="6"/>
+      <rect x="1140" y="164" width="190" height="116" rx="6"/>
+      <rect x="1358" y="164" width="190" height="116" rx="6"/>
+    </g>
+    <g fill="#0b7a75">
+      <rect x="50" y="164" width="190" height="7" rx="3"/><rect x="268" y="164" width="190" height="7" rx="3"/>
+      <rect x="486" y="164" width="190" height="7" rx="3"/><rect x="704" y="164" width="190" height="7" rx="3"/>
+      <rect x="1140" y="164" width="190" height="7" rx="3"/><rect x="1358" y="164" width="190" height="7" rx="3"/>
+    </g>
+    <g text-anchor="middle" fill="#111827">
+      <text x="145" y="205" font-size="20" font-weight="700">Brief + options</text>
+      <text x="145" y="234" font-size="14" fill="#4b5563">people · scenarios · ports</text>
+      <text x="145" y="255" font-size="14" fill="#4b5563">three concepts when applicable</text>
+      <text x="363" y="205" font-size="20" font-weight="700">Parametric skeleton</text>
+      <text x="363" y="234" font-size="14" fill="#4b5563">datums · envelopes · views</text>
+      <text x="363" y="255" font-size="14" fill="#4b5563">purchased parts + keep-outs</text>
+      <text x="581" y="205" font-size="20" font-weight="700">Create / revise CAD</text>
+      <text x="581" y="234" font-size="14" fill="#4b5563">one coherent stage at a time</text>
+      <text x="581" y="255" font-size="14" fill="#4b5563">native geometry where possible</text>
+      <text x="799" y="205" font-size="20" font-weight="700">Read back actual</text>
+      <text x="799" y="234" font-size="14" fill="#4b5563">type · layer · coordinates</text>
+      <text x="799" y="255" font-size="14" fill="#4b5563">requested / actual / diff</text>
+      <text x="1235" y="205" font-size="20" font-weight="700">Semantic DRC</text>
+      <text x="1235" y="234" font-size="14" fill="#4b5563">topology · views · scale</text>
+      <text x="1235" y="255" font-size="14" fill="#4b5563">product review when applicable</text>
+      <text x="1453" y="205" font-size="20" font-weight="700">Human release</text>
+      <text x="1453" y="234" font-size="14" fill="#4b5563">candidate after review</text>
+      <text x="1453" y="255" font-size="14" fill="#4b5563">approval is external evidence</text>
+    </g>
+    <rect x="922" y="164" width="190" height="116" rx="6" fill="#fff4cf" stroke="#d9ad27" stroke-width="2"/>
+    <rect x="922" y="164" width="190" height="7" rx="3" fill="#d9ad27"/>
+    <text x="1017" y="205" text-anchor="middle" font-size="20" font-weight="700" fill="#624b00">Requested = actual?</text>
+    <text x="1017" y="234" text-anchor="middle" font-size="14" fill="#765d0a">postcondition gate</text>
+    <text x="1017" y="255" text-anchor="middle" font-size="14" fill="#765d0a">no silent carry-over</text>
+    <path d="M1017 280 V362" fill="none" stroke="#e63946" stroke-width="3" marker-end="url(#red-arrow)"/>
+    <rect x="900" y="374" width="230" height="70" rx="6" fill="#e63946"/>
+    <text x="1015" y="403" text-anchor="middle" font-size="17" font-weight="750" fill="#ffffff">ROLLBACK + HARD STOP</text>
+    <text x="1015" y="425" text-anchor="middle" font-size="12" fill="#ffffff">E_POSTCONDITION_MISMATCH</text>
+  </g>
+  <g font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">
+    <rect x="50" y="476" width="168" height="25" rx="3" fill="#e8f4f2"/><text x="134" y="493" text-anchor="middle" fill="#0b7a75">VIEW SOURCE</text>
+    <rect x="230" y="476" width="168" height="25" rx="3" fill="#fff4cf"/><text x="314" y="493" text-anchor="middle" fill="#765d0a">TOPOLOGY OWNED</text>
+    <rect x="410" y="476" width="168" height="25" rx="3" fill="#fdebec"/><text x="494" y="493" text-anchor="middle" fill="#b4232d">PLOT SCALE</text>
+    <text x="1548" y="494" text-anchor="end" font-size="15" fill="#4b5563">Geometry pass ≠ product pass</text>
+  </g>
+</svg>

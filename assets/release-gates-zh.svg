@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="520" viewBox="0 0 1600 520" role="img" aria-labelledby="title desc">
+  <title id="title">机械 CAD 证据闸门流程</title>
+  <desc id="desc">从简报到人工发布的七个阶段，请求值与实际值不一致时回滚并硬停止。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#111827"/></marker>
+    <marker id="red-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#e63946"/></marker>
+  </defs>
+  <rect width="1600" height="520" fill="#f7f7f2"/><rect x="0" width="14" height="520" fill="#e63946"/><rect x="14" width="6" height="520" fill="#0b7a75"/>
+  <g font-family="Microsoft YaHei, Segoe UI, Arial, sans-serif" fill="#111827">
+    <text x="58" y="58" font-size="15" font-weight="700" fill="#0b7a75">AUTOCAD SKILLS / RELEASE LOGIC</text>
+    <text x="58" y="104" font-size="38" font-weight="750">机械 CAD 证据闸门</text>
+    <text x="58" y="132" font-size="17" fill="#4b5563">每次可变结果都要回读，每个设计结论都要说明证据边界。</text>
+  </g>
+  <g fill="none" stroke="#111827" stroke-width="2.5" marker-end="url(#arrow)">
+    <path d="M240 222 H266"/><path d="M458 222 H484"/><path d="M676 222 H702"/><path d="M894 222 H920"/><path d="M1112 222 H1138"/><path d="M1330 222 H1356"/>
+  </g>
+  <g font-family="Microsoft YaHei, Segoe UI, Arial, sans-serif">
+    <g fill="#ffffff" stroke="#c7c9c5" stroke-width="2">
+      <rect x="50" y="164" width="190" height="116" rx="6"/><rect x="268" y="164" width="190" height="116" rx="6"/><rect x="486" y="164" width="190" height="116" rx="6"/><rect x="704" y="164" width="190" height="116" rx="6"/><rect x="1140" y="164" width="190" height="116" rx="6"/><rect x="1358" y="164" width="190" height="116" rx="6"/>
+    </g>
+    <g fill="#0b7a75"><rect x="50" y="164" width="190" height="7" rx="3"/><rect x="268" y="164" width="190" height="7" rx="3"/><rect x="486" y="164" width="190" height="7" rx="3"/><rect x="704" y="164" width="190" height="7" rx="3"/><rect x="1140" y="164" width="190" height="7" rx="3"/><rect x="1358" y="164" width="190" height="7" rx="3"/></g>
+    <g text-anchor="middle" fill="#111827">
+      <text x="145" y="205" font-size="20" font-weight="700">简报与方案</text><text x="145" y="234" font-size="14" fill="#4b5563">人群 · 场景 · 插口</text><text x="145" y="255" font-size="14" fill="#4b5563">适用时比较三种概念</text>
+      <text x="363" y="205" font-size="20" font-weight="700">参数化骨架</text><text x="363" y="234" font-size="14" fill="#4b5563">基准 · 包络 · 视图</text><text x="363" y="255" font-size="14" fill="#4b5563">采购件与避让空间</text>
+      <text x="581" y="205" font-size="20" font-weight="700">创建 / 修改 CAD</text><text x="581" y="234" font-size="14" fill="#4b5563">每次只做一个阶段</text><text x="581" y="255" font-size="14" fill="#4b5563">优先原生几何</text>
+      <text x="799" y="205" font-size="20" font-weight="700">回读实际结果</text><text x="799" y="234" font-size="14" fill="#4b5563">类型 · 图层 · 坐标</text><text x="799" y="255" font-size="14" fill="#4b5563">requested / actual / diff</text>
+      <text x="1235" y="205" font-size="20" font-weight="700">语义 DRC</text><text x="1235" y="234" font-size="14" fill="#4b5563">拓扑 · 视图 · 比例</text><text x="1235" y="255" font-size="14" fill="#4b5563">适用时增加产品评审</text>
+      <text x="1453" y="205" font-size="20" font-weight="700">人工发布</text><text x="1453" y="234" font-size="14" fill="#4b5563">人工评审后候选</text><text x="1453" y="255" font-size="14" fill="#4b5563">批准属于外部证据</text>
+    </g>
+    <rect x="922" y="164" width="190" height="116" rx="6" fill="#fff4cf" stroke="#d9ad27" stroke-width="2"/><rect x="922" y="164" width="190" height="7" rx="3" fill="#d9ad27"/>
+    <text x="1017" y="205" text-anchor="middle" font-size="20" font-weight="700" fill="#624b00">请求值 = 实际值？</text><text x="1017" y="234" text-anchor="middle" font-size="14" fill="#765d0a">后置条件闸门</text><text x="1017" y="255" text-anchor="middle" font-size="14" fill="#765d0a">禁止状态串写</text>
+    <path d="M1017 280 V362" fill="none" stroke="#e63946" stroke-width="3" marker-end="url(#red-arrow)"/>
+    <rect x="900" y="374" width="230" height="70" rx="6" fill="#e63946"/><text x="1015" y="403" text-anchor="middle" font-size="18" font-weight="750" fill="#ffffff">回滚 + 硬停止</text><text x="1015" y="425" text-anchor="middle" font-size="12" fill="#ffffff">E_POSTCONDITION_MISMATCH</text>
+  </g>
+  <g font-family="Microsoft YaHei, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">
+    <rect x="50" y="476" width="168" height="25" rx="3" fill="#e8f4f2"/><text x="134" y="493" text-anchor="middle" fill="#0b7a75">共同视图来源</text>
+    <rect x="230" y="476" width="168" height="25" rx="3" fill="#fff4cf"/><text x="314" y="493" text-anchor="middle" fill="#765d0a">实体归属</text>
+    <rect x="410" y="476" width="168" height="25" rx="3" fill="#fdebec"/><text x="494" y="493" text-anchor="middle" fill="#b4232d">真实打印比例</text>
+    <text x="1548" y="494" text-anchor="end" font-size="15" fill="#4b5563">几何通过 ≠ 产品通过</text>
+  </g>
+</svg>

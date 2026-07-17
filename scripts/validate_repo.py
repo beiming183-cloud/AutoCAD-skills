@@ -88,10 +88,11 @@ def check_examples_and_assets(errors: list[str]) -> None:
             errors.append("sample DRC report must demonstrate a blocking finding")
     except (OSError, json.JSONDecodeError) as exc:
         errors.append(f"invalid sample DRC report: {exc}")
-    try:
-        ET.parse(ROOT / "assets" / "hero.svg")
-    except (OSError, ET.ParseError) as exc:
-        errors.append(f"invalid hero SVG: {exc}")
+    for asset in ("hero.svg", "release-gates-en.svg", "release-gates-zh.svg"):
+        try:
+            ET.parse(ROOT / "assets" / asset)
+        except (OSError, ET.ParseError) as exc:
+            errors.append(f"invalid SVG {asset}: {exc}")
     for required in (
         "README.md",
         "README.zh-CN.md",
