@@ -1,0 +1,49 @@
+name: Feature request
+description: Propose a CAD workflow, DRC rule, standard, example, or compatibility improvement
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: pain
+    attributes:
+      label: Engineering pain point
+      description: What real failure, repeated manual work, or missing evidence does this address?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the gate, workflow, rule, output, or compatibility change.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Requirement source and evidence
+      description: List applicable standards/editions, vendor data, measurements, fixtures, or authoritative documentation.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: State measurable pass/fail behavior, units, boundaries, known limitations, and a test case.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Primary area
+      options:
+        - GB/T drafting
+        - AutoCAD or MCP
+        - 2D or 3D modeling
+        - Assembly or motion
+        - DRC or DFM
+        - GPS, tolerances, or inspection
+        - Consumer product or safety gate
+        - Installation or runner compatibility
+        - Documentation or example
+    validations:
+      required: true

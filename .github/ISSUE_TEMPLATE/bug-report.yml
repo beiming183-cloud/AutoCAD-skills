@@ -1,0 +1,61 @@
+name: Bug report
+description: Report incorrect Skill behavior, validation, installation, or documentation
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for providing a reproducible, nonconfidential report. Do not upload proprietary drawings, credentials, or sensitive manufacturing data.
+  - type: input
+    id: version
+    attributes:
+      label: Release or commit
+      placeholder: v2.0.0 or commit SHA
+    validations:
+      required: true
+  - type: dropdown
+    id: runner
+    attributes:
+      label: Agent runner
+      options:
+        - Codex
+        - Claude Code
+        - Other Agent Skills runner
+        - Not runner-specific
+    validations:
+      required: true
+  - type: input
+    id: cad_backend
+    attributes:
+      label: CAD application or automation bridge
+      placeholder: AutoCAD version, MCP/COM/script backend and version, or none
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and minimal reproduction
+      description: Include the smallest safe prompt, fixture, or sequence that demonstrates the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Actual result and evidence
+      description: Include rule IDs, structured errors, requested/actual/diff, redacted logs, or screenshots when relevant.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I removed credentials, personal data, proprietary drawings, and sensitive paths.
+          required: true
+        - label: I did not convert missing evidence into a claimed pass or certification.
+          required: true

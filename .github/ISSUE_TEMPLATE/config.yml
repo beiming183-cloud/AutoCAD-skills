@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security-sensitive report
+    url: https://github.com/beiming183-cloud/AutoCAD-skills/security/advisories/new
+    about: Use private vulnerability reporting when available; do not post secrets or sensitive drawings publicly.
+  - name: Read the bilingual documentation
+    url: https://github.com/beiming183-cloud/AutoCAD-skills#readme
+    about: Check installation, compatibility, examples, limitations, and FAQ first.

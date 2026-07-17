@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">AutoCAD Skills project preview</title>
+  <desc id="desc">A GB/T mechanical CAD skill for AI agents with strict DRC, cross-view verification, and product safety gates.</desc>
+  <rect width="1280" height="640" fill="#f7f7f2"/>
+  <rect x="0" y="0" width="20" height="640" fill="#e63946"/>
+  <rect x="20" y="0" width="8" height="640" fill="#0b7a75"/>
+
+  <g font-family="Segoe UI, Arial, sans-serif" fill="#111827">
+    <rect x="72" y="70" width="54" height="54" rx="4" fill="#111827"/>
+    <path d="M84 109 L98 84 L112 109 M90 100 H106" fill="none" stroke="#f7f7f2" stroke-width="4" stroke-linecap="square"/>
+    <text x="148" y="105" font-size="30" font-weight="700">AutoCAD Skills</text>
+    <text x="72" y="174" font-size="48" font-weight="750">Mechanical CAD</text>
+    <text x="72" y="224" font-size="48" font-weight="750">that proves its work.</text>
+    <text x="72" y="262" font-size="21" fill="#4b5563">GB/T · AutoCAD/MCP · 2D/3D · semantic DRC</text>
+    <text x="72" y="290" font-size="21" fill="#4b5563">Product safety gates for AI agents</text>
+
+    <g transform="translate(72 316)">
+      <rect width="204" height="44" rx="4" fill="#0b7a75"/>
+      <text x="102" y="29" text-anchor="middle" font-size="17" font-weight="650" fill="#ffffff">Codex + Claude Code</text>
+      <rect x="216" width="150" height="44" rx="4" fill="#f2c14e"/>
+      <text x="291" y="29" text-anchor="middle" font-size="17" font-weight="650">First-angle GB/T</text>
+      <rect x="378" width="168" height="44" rx="4" fill="#e63946"/>
+      <text x="462" y="29" text-anchor="middle" font-size="17" font-weight="650" fill="#ffffff">Hard-stop mismatch</text>
+    </g>
+  </g>
+
+  <g transform="translate(744 68)" fill="none" stroke-linejoin="round">
+    <rect x="0" y="0" width="450" height="310" rx="6" fill="#ffffff" stroke="#d1d5db" stroke-width="2"/>
+    <text x="24" y="34" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="650" fill="#6b7280">SHARED PARAMETER SOURCE</text>
+    <g transform="translate(34 76)" stroke="#111827">
+      <path d="M0 78 H58 L78 44 H236 L256 78 H332 V154 H256 L236 188 H78 L58 154 H0 Z" stroke-width="5"/>
+      <circle cx="116" cy="116" r="42" stroke-width="4"/>
+      <circle cx="216" cy="116" r="42" stroke-width="4"/>
+      <path d="M116 44 V188 M216 44 V188 M44 116 H288" stroke="#0b7a75" stroke-width="2" stroke-dasharray="16 6 3 6"/>
+      <path d="M78 44 L72 32 M236 44 L242 32 M78 188 L72 200 M236 188 L242 200" stroke="#e63946" stroke-width="3"/>
+      <circle cx="368" cy="116" r="58" stroke-width="5"/>
+      <circle cx="368" cy="116" r="24" stroke-width="4"/>
+      <path d="M298 116 H438 M368 46 V186" stroke="#0b7a75" stroke-width="2" stroke-dasharray="16 6 3 6"/>
+    </g>
+    <g font-family="Segoe UI, Arial, sans-serif" font-size="11.5" font-weight="650">
+      <rect x="24" y="274" width="120" height="24" rx="3" fill="#e8f4f2" stroke="none"/>
+      <text x="84" y="291" text-anchor="middle" fill="#0b7a75">VIEW CONSISTENT</text>
+      <rect x="152" y="274" width="126" height="24" rx="3" fill="#fff5d6" stroke="none"/>
+      <text x="215" y="291" text-anchor="middle" fill="#7a5a00">TOPOLOGY OWNED</text>
+      <rect x="286" y="274" width="140" height="24" rx="3" fill="#fdebec" stroke="none"/>
+      <text x="356" y="291" text-anchor="middle" fill="#b4232d">SCALE VERIFIED</text>
+    </g>
+  </g>
+
+  <g transform="translate(50 442)" font-family="Segoe UI, Arial, sans-serif">
+    <text x="0" y="0" font-size="15" font-weight="700" fill="#6b7280">EVIDENCE-GATED WORKFLOW</text>
+    <g transform="translate(0 28)">
+      <g fill="#ffffff" stroke="#c7c9c5" stroke-width="2">
+        <rect x="0" y="0" width="170" height="72" rx="5"/>
+        <rect x="194" y="0" width="170" height="72" rx="5"/>
+        <rect x="388" y="0" width="170" height="72" rx="5"/>
+        <rect x="582" y="0" width="170" height="72" rx="5"/>
+        <rect x="776" y="0" width="170" height="72" rx="5"/>
+        <rect x="970" y="0" width="166" height="72" rx="5"/>
+      </g>
+      <g fill="#111827" font-size="17" font-weight="650" text-anchor="middle">
+        <text x="85" y="43">Brief + options</text>
+        <text x="279" y="43">Parametric skeleton</text>
+        <text x="473" y="43">Read back actual</text>
+        <text x="667" y="43">Semantic DRC</text>
+        <text x="861" y="43">Visual review</text>
+        <text x="1053" y="43">Human release</text>
+      </g>
+      <g stroke="#111827" stroke-width="2" fill="none">
+        <path d="M170 36 H190 M186 30 L192 36 L186 42"/>
+        <path d="M364 36 H384 M380 30 L386 36 L380 42"/>
+        <path d="M558 36 H578 M574 30 L580 36 L574 42"/>
+        <path d="M752 36 H772 M768 30 L774 36 L768 42"/>
+        <path d="M946 36 H966 M962 30 L968 36 L962 42"/>
+      </g>
+      <rect x="1148" y="0" width="60" height="72" rx="5" fill="#e63946"/>
+      <text x="1178" y="30" font-size="13" font-weight="750" text-anchor="middle" fill="#ffffff">STOP</text>
+      <text x="1178" y="50" font-size="10" text-anchor="middle" fill="#ffffff">on mismatch</text>
+    </g>
+    <text x="0" y="132" font-size="16" fill="#4b5563">A successful command is not a successful design review.</text>
+    <text x="1208" y="132" text-anchor="end" font-size="16" font-weight="650" fill="#0b7a75">github.com/beiming183-cloud/AutoCAD-skills</text>
+  </g>
+</svg>

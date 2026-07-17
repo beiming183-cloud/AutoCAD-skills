@@ -1,0 +1,37 @@
+{
+  "artifact": "desktop-power-hub-concept-a",
+  "configuration": "concept-a/rev-02",
+  "rules": [
+    {
+      "evidence": "parameter-brief.json",
+      "rule_id": "CONSUMER_CONCEPT_GATE",
+      "status": "PASS"
+    },
+    {
+      "evidence": "supplier-envelope-register.csv",
+      "finding": "AC outlet mounting depth and latch keep-out are unverified",
+      "rule_id": "PURCHASED_PART_ENVELOPE",
+      "status": "FAIL"
+    },
+    {
+      "evidence": "hazard-log-draft.json",
+      "finding": "protective class and rotating cable strategy are unresolved",
+      "rule_id": "MAINS_SAFETY_GATE",
+      "status": "FAIL"
+    },
+    {
+      "evidence": "skeleton-preview-sha256:example-only",
+      "finding": "rear cable bend envelope intersects the support footprint",
+      "rule_id": "EARLY_SKELETON_PREVIEW",
+      "status": "FAIL"
+    },
+    {
+      "evidence": "geometry-audit.json",
+      "rule_id": "DANGLING_ENDPOINT",
+      "status": "PASS"
+    }
+  ],
+  "summary": "Geometry is nondegenerate, but product definition and safety architecture block detailed CAD.",
+  "verification_tier": "Tier 2",
+  "verdict": "BLOCKED"
+}
