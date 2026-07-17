@@ -8,6 +8,8 @@ A deterministic validator owns pass/fail. The agent chooses the correct rules, p
 
 There is no universal `manufacturable` result. Process, material, machine, tooling, supplier, quantity, and inspection capability determine the applicable rule deck and thresholds.
 
+Keep geometry/drawing validity and product-design validity as separate verdicts. A model may pass topology, dimensions, interference, and export checks while still failing concept selection, appearance intent, ergonomics, reach/access, cable management, stability, or safety architecture.
+
 ## Validator Contract
 
 Every rule must define:
@@ -104,6 +106,18 @@ Apply these drawing-semantic rules:
 - `PLOT_SCALE_CONSISTENCY`: title-block scale agrees with actual layout/viewport/PDF transform. Fit-to-page output cannot carry `1:1` or another numeric engineering scale; use an approved `NTS`/non-scale declaration and record plot mode `FIT`.
 - `FINAL_VISUAL_INTEGRITY`: stable final views contain no unexplained isolated lines, protruding fragments, unowned thin lines, open material boundaries, or foreground/background occlusion errors.
 
+### Consumer-product design review overlay
+
+For a new or substantially redesigned consumer product, enclosure, appliance, powered accessory, or product materially shaped by ports, cables, controls, moving parts, appearance, ergonomics, or stability, also apply `consumer-product-concept.md` before Gate 4 and before detailed/manufacturing release:
+
+- `CONSUMER_CONCEPT_GATE`: people, scenarios, interface/port count, user actions, cable directions, and product intent are complete; at least three materially different low-cost concepts were compared for a new concept/major form change, unless an approved selected concept and bypass authority are recorded.
+- `PURCHASED_PART_ENVELOPE`: every detail-driving purchased-part body, mounting interface, connector, service/thermal keep-out, and cable envelope is traceable to a current supplier source or controlled physical measurement; unverified installation data remains `TBD`.
+- `MAINS_SAFETY_GATE`: when mains, hazardous energy, or moving/rotating hazards apply, a preliminary supply/isolation/grounding/fire/motion-protection/compliance architecture exists with an owner, hazard log, evidence plan, and unresolved certification work. Failure limits the artifact to exterior concept and hazard/keep-out envelopes.
+- `EARLY_SKELETON_PREVIEW`: a fresh preview immediately after the parameterized skeleton proves plausible proportion/layout, interface count/directions, people/actions, cable routes, support footprint, purchased-part fit, and safety/service keep-outs before detail and annotation.
+- `PRODUCT_DESIGN_REVIEW`: appearance/product character, ergonomics/actions, reach/access/service, cable management, and stability have separate evidence and dispositions. Do not average a blocker into an overall score or infer this pass from geometry DRC or render quality.
+
+Treat a product-design gate failure as release-blocking for the advertised maturity, even when all universal geometry rules pass. Keep subjective appearance decisions traceable to the approved brief and authorized reviewer; mark missing anthropometric, user-test, mass, friction, force, or safety evidence `NOT_EVALUATED` rather than favorable.
+
 ### Gate 4: assembly and motion DRC
 
 - Expected component/body count and intended connectivity graph.
@@ -182,6 +196,8 @@ Use a machine-readable table or JSON plus a concise human summary. Each finding 
 rule_id:
 scope/configuration:
 verification_tier: Tier 1 | Tier 2 | Tier 3
+consumer_product_gate_status:
+product_design_review_status:
 component_id_and_line_class:
 intentional_open_end_or_crossing_basis:
 status: PASS | FAIL | WARNING | NOT_EVALUATED | ERROR

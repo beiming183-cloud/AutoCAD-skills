@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MIRRORS = {
     "SKILL.md": (
         "SKILL.zh-CN.md",
-        "7c474f56b6cf00265dacd922882cb1da1e9278daa8633b62f56717feaf648728",
+        "803436358d03adcf13d3b927ccd6e0663b90d73d0c9b18f63503e1a95f00aa6b",
     ),
     "references/gbt-drafting.md": (
         "references/zh-CN/gbt-drafting.md",
@@ -22,15 +22,19 @@ MIRRORS = {
     ),
     "references/autocad-mcp-workflow.md": (
         "references/zh-CN/autocad-mcp-workflow.md",
-        "be3b3783cad0377c3ff7bc45f09700109de1ccacc2740489156d1fa2d75cb8e9",
+        "21ea750847bc29a1b32fbe0374316aa65c76c755a3ac5f2adfb450dcee29faae",
     ),
     "references/complex-assembly-drafting.md": (
         "references/zh-CN/complex-assembly-drafting.md",
         "a58047d8c737564582314a5b0e21364ad847f1c1ca116aa5c3adbaba43a03e19",
     ),
+    "references/consumer-product-concept.md": (
+        "references/zh-CN/consumer-product-concept.md",
+        "00f3f906ab23c3ddac636ca0e0565af915c7acf9975b08373a45ce722662249c",
+    ),
     "references/drc-review.md": (
         "references/zh-CN/drc-review.md",
-        "7394c706ca4f2d5b0bef24a20aa7a9779e553a96c0eed5f16a5db200d76ac6aa",
+        "74fb62174df21372d5c9ef91fa24a53e462191b8defe6fb7db7689c928a47ec3",
     ),
 }
 
@@ -46,6 +50,12 @@ SEMANTIC_IDS = {
     "DELIVERABLE_SCOPE_IDENTITY",
     "PLOT_SCALE_CONSISTENCY",
     "FINAL_VISUAL_INTEGRITY",
+    "CONSUMER_CONCEPT_GATE",
+    "PURCHASED_PART_ENVELOPE",
+    "MAINS_SAFETY_GATE",
+    "EARLY_SKELETON_PREVIEW",
+    "PRODUCT_DESIGN_REVIEW",
+    "FAILURE_REVIEW_COMPLETENESS",
 }
 STABLE_ID_RE = re.compile(r"\b(?:E|GBT)_[A-Z0-9_]+\b")
 HEADING_RE = re.compile(r"^(#{1,6})\s+", re.MULTILINE)
@@ -56,7 +66,8 @@ def read_text(relative_path: str) -> str:
 
 
 def digest(relative_path: str) -> str:
-    return hashlib.sha256((ROOT / relative_path).read_bytes()).hexdigest()
+    normalized = read_text(relative_path).replace("\r\n", "\n").replace("\r", "\n")
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
 
 
 def stable_ids(text: str) -> set[str]:
